@@ -1,0 +1,9 @@
+setup custom
++ k a1
++ R h2
++ R g2
++ K a8
+= black
+done game
+move a1 b1
+move h2 h1
