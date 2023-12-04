@@ -12,8 +12,8 @@ class Cell {
         virtual void setDead (int x, int y) = 0;
         virtual void setAlive (int x, int y) = 0; 
         virtual char getTile (int x, int y) = 0;
-        virtual void setFirstMove (int x, int y) = 0;
-        virtual bool getFirstMove (int x, int y) = 0;
+        virtual void setOpening (int x, int y) = 0;
+        virtual bool getOpening (int x, int y) = 0;
         virtual ~Cell () = default;
 };
 

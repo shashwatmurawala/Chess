@@ -12,8 +12,8 @@ class Blank : public Cell {
         void setAlive (int x, int y) override;
         void setDead (int x, int y) override;
         char getTile (int x, int y) override;
-        void setFirstMove (int x, int y) override;
-        bool getFirstMove (int x, int y) override;
+        void setOpening (int x, int y) override;
+        bool getOpening (int x, int y) override;
 };
 
 #endif

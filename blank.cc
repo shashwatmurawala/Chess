@@ -22,9 +22,9 @@ void Blank::setDead (int x, int y) {
 void Blank::setAlive (int x, int y) {
     return;
 }
-void Blank::setFirstMove (int x, int y) {
+void Blank::setOpening (int x, int y) {
     return;
 }
-bool Blank::getFirstMove (int x, int y) {
+bool Blank::getOpening (int x, int y) {
     return false;
 }

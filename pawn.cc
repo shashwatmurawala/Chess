@@ -36,19 +36,19 @@ char Pawn::getTile (int x1, int y1) {
     else if (x1 == x && y1 == y && alive) return 'P';
     else return next->getTile(x1, y1);
 }
-void Pawn::setFirstMove (int x1, int y1) {
+void Pawn::setOpening (int x1, int y1) {
     if (x == x1 && y == y1 && alive) {
         first_move = false;
     }
     else {
-        return next->setFirstMove(x1, y1);
+        return next->setOpening(x1, y1);
     }
 }
-bool Pawn::getFirstMove (int x1, int y1) {
+bool Pawn::getOpening (int x1, int y1) {
     if (x == x1 && y == y1 && alive) {
         return first_move;
     }
     else {
-        return next->getFirstMove(x1, y1);
+        return next->getOpening(x1, y1);
     }
 }
