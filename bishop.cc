@@ -1,7 +1,7 @@
 #include "bishop.h"
 
-Bishop::Bishop (Cell *next, int x, int y, Colour team):
-    next{next}, x{x}, y{y}, team{team}, alive{true} {}
+Bishop::Bishop (Cell *next, int x, int y, Colour col):
+    next{next}, x{x}, y{y}, col{col}, alive{true} {}
 
 Bishop::~Bishop () {
     delete next;
@@ -15,9 +15,9 @@ void Bishop::move (int x1, int y1, int x2, int y2) {
     else return next->move(x1, y1, x2, y2);
 }
 
-Colour Bishop::getTeam (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) return team;
-    else return next->getTeam(x1, y1);
+Colour Bishop::getColour (int x1, int y1) {
+    if (x == x1 && y == y1 && alive) return col;
+    else return next->getColour(x1, y1);
 }
 void Bishop::setDead (int x1, int y1) {
     if (x1 == x && y1 == y && alive) alive = false;
@@ -28,7 +28,7 @@ void Bishop::setAlive (int x1, int y1) {
     else { next->setAlive(x1, y1); }
 }
 char Bishop::getTile (int x1, int y1) {
-    if (x1 == x && y1 == y && team == Colour::WHITE && alive) return 'b';
+    if (x1 == x && y1 == y && col == Colour::WHITE && alive) return 'b';
     else if (x1 == x && y1 == y && alive) return 'B';
     else return next->getTile(x1, y1);
 }
