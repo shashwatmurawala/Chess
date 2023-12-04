@@ -13,8 +13,8 @@ char Blank::getTile (int x, int y) {
 void Blank::move (int x1, int y1, int x2, int y2){
 	return;
 }
-char Blank::getTeam (int x1, int y1) {
-    return ' '; 
+Colour Blank::getTeam (int x1, int y1) {
+    return Colour::NA; 
 }
 void Blank::setDead (int x, int y) {
     return;

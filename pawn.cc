@@ -1,7 +1,7 @@
 #include "pawn.h"
 #include <iostream>
 
-Pawn::Pawn (Cell *next, int x, int y, char team):
+Pawn::Pawn (Cell *next, int x, int y, Colour team):
     next{next}, x{x}, y{y}, team{team}, alive{true} {}
 
 Pawn::~Pawn () {
@@ -19,7 +19,7 @@ void Pawn::move (int x1, int y1, int x2, int y2) {
     }
 }
 
-char Pawn::getTeam (int x1, int y1) {
+Colour Pawn::getTeam (int x1, int y1) {
     if (x == x1 && y == y1 && alive) return team;
     else return next->getTeam(x1, y1);
 }
@@ -32,7 +32,7 @@ void Pawn::setAlive (int x1, int y1) {
     else { next->setAlive(x1, y1); }
 }
 char Pawn::getTile (int x1, int y1) {
-    if (x1 == x && y1 == y && team == 'w' && alive) return 'p';
+    if (x1 == x && y1 == y && team == Colour::WHITE && alive) return 'p';
     else if (x1 == x && y1 == y && alive) return 'P';
     else return next->getTile(x1, y1);
 }

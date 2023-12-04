@@ -1,6 +1,6 @@
 #include "bishop.h"
 
-Bishop::Bishop (Board *next, int x, int y, char team):
+Bishop::Bishop (Cell *next, int x, int y, Colour team):
     next{next}, x{x}, y{y}, team{team}, alive{true} {}
 
 Bishop::~Bishop () {
@@ -15,7 +15,7 @@ void Bishop::move (int x1, int y1, int x2, int y2) {
     else return next->move(x1, y1, x2, y2);
 }
 
-char Bishop::getTeam (int x1, int y1) {
+Colour Bishop::getTeam (int x1, int y1) {
     if (x == x1 && y == y1 && alive) return team;
     else return next->getTeam(x1, y1);
 }
@@ -28,7 +28,7 @@ void Bishop::setAlive (int x1, int y1) {
     else { next->setAlive(x1, y1); }
 }
 char Bishop::getTile (int x1, int y1) {
-    if (x1 == x && y1 == y && team == 'w' && alive) return 'b';
+    if (x1 == x && y1 == y && team == Colour::WHITE && alive) return 'b';
     else if (x1 == x && y1 == y && alive) return 'B';
     else return next->getTile(x1, y1);
 }
