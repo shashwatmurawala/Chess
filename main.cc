@@ -33,8 +33,8 @@ int main () {
     Board *head = nullptr;
     GameManager *gm = nullptr;
     Game *game = nullptr;
-    Observer *txt = nullptr;
-    Observer *graph = nullptr;
+    Observer *td = nullptr;
+    Observer *gd = nullptr;
 
     cout << "Welcome to CS 246's Chess" << endl;
     cout << "You are able to use the command list at any point in time view your current options" << endl;
@@ -58,10 +58,10 @@ int main () {
             game = new Game {&head, gm, nullptr, nullptr};
             game->setPlayer1(new Human{});
             game->setPlayer2(new Human{});
-            txt = new TextDisplay {*gm, 8, 8, 8};
-            gm->attach(txt);
-            graph = new GraphicDisplay {*gm, 8, 8};
-            gm->attach(graph);
+            td = new TextDisplay {*gm, 8, 8, 8};
+            gm->attach(td);
+            gd = new GraphicDisplay {*gm, 8, 8};
+            gm->attach(gd);
 
 	        cin >> inp;
             if (inp == "custom") {
