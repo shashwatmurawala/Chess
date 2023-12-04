@@ -4,7 +4,7 @@
 #include "piece.h"
 
 class Pawn : public Piece {
-    Board *next;
+    Cell *next;
     int x, y;
     char team;
     bool alive = true;
@@ -17,7 +17,7 @@ class Pawn : public Piece {
         char getTile (int x, int y) override;
         void setFirstMove (int x, int y) override;
         bool getFirstMove (int x, int y) override;
-        Pawn (Board *next, int x, int y, char team);
+        Pawn (Cell *next, int x, int y, char team);
 	~Pawn ();
 };
 

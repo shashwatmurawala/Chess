@@ -1,6 +1,6 @@
 #include "rook.h"
 
-Rook::Rook (Board *next, int x, int y, char team):
+Rook::Rook (Cell *next, int x, int y, char team):
     next{next}, x{x}, y{y}, team{team}, alive{true} {}
 
 Rook::~Rook () {

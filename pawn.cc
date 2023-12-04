@@ -1,7 +1,7 @@
 #include "pawn.h"
 #include <iostream>
 
-Pawn::Pawn (Board *next, int x, int y, char team):
+Pawn::Pawn (Cell *next, int x, int y, char team):
     next{next}, x{x}, y{y}, team{team}, alive{true} {}
 
 Pawn::~Pawn () {

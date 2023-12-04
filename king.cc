@@ -1,6 +1,6 @@
 #include "king.h"
 
-King::King (Board *next, int x, int y, char team):
+King::King (Cell *next, int x, int y, char team):
     next{next}, x{x}, y{y}, team{team}, alive{true} {}
 
 King::~King () {

@@ -1,6 +1,6 @@
 #include "queen.h"
 
-Queen::Queen (Board *next, int x, int y, char team):
+Queen::Queen (Cell *next, int x, int y, char team):
     next{next}, x{x}, y{y}, team{team}, alive{true} {}
 
 Queen::~Queen () {

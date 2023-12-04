@@ -4,7 +4,7 @@
 #include "piece.h"
 
 class King : public Piece {
-    Board *next;
+    Cell *next;
     int x, y;
     char team;
     bool alive = true;
@@ -17,7 +17,7 @@ class King : public Piece {
         char getTile (int x, int y) override;
         void setFirstMove (int x, int y) override;
         bool getFirstMove (int x, int y) override;
-        King (Board *next, int x, int y, char team);
+        King (Cell *next, int x, int y, char team);
         ~King ();
 };
 
