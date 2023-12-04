@@ -3,6 +3,7 @@
  GraphicDisplay::GraphicDisplay (GameManager &game, int width, int height):
     game{game}, win{(width + 2) * 20, (height + 2) * 20}, width{width + 1}, height{height + 1} {}
 
+
 // one "block" is a 10x10 pixel square
  void GraphicDisplay::display() {
     win.drawString(30, 10, "a");
