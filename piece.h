@@ -3,7 +3,7 @@
 
 #include "board.h"
 
-class Piece : public Board {
+class Piece : public Cell {
     public:
         Piece ();
         ~Piece () = default;

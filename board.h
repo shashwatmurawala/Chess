@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-class Board {
+class Cell {
     public:
         virtual void move (int x1, int y1, int x2, int y2) = 0;
         virtual char getTeam (int x1, int y1) = 0;
@@ -12,7 +12,7 @@ class Board {
         virtual char getTile (int x, int y) = 0;
         virtual void setFirstMove (int x, int y) = 0;
         virtual bool getFirstMove (int x, int y) = 0;
-        virtual ~Board () = default;
+        virtual ~Cell () = default;
 };
 
 #endif

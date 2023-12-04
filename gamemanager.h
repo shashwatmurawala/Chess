@@ -6,11 +6,12 @@
 #include "subject.h"
 
 class GameManager : public Subject {
-    Board **theBoard;
+    Cell **theBoard;
+
     public:
-        explicit GameManager (Board **board);
-        char getTile(int x1, int y1);
-        Board **board();
+        explicit GameManager(Cell **board);
+        char getTile(int x1, int y1) const;
+        Cell **getBoard() const;
         ~GameManager ();
 };
 

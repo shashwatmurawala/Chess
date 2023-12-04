@@ -17,6 +17,7 @@
 #include "player.h"
 #include "human.h"
 #include "game.h"
+#include "controller.h"
 
 #include <utility>
 #include <memory>
@@ -29,30 +30,23 @@ int main () {
     bool setup = false;
     int white_score = 0;
     int black_score = 0;
-    string inp;
-    Board *head = nullptr;
+    Cell *board = nullptr;
     GameManager *gm = nullptr;
     Game *game = nullptr;
     Observer *td = nullptr;
     Observer *gd = nullptr;
+    Controller controller {gm, td, gd};
 
     cout << "Welcome to CS 246's Chess" << endl;
     cout << "You are able to use the command list at any point in time view your current options" << endl;
-    while (cin >> inp) {
-        if (inp == "game") {
-            if (!setup) {
-                cout << "The game must be setup before continuing." << endl;
-            }
-            else {
-                game->playGame();
-                white_score += game->getWhite();
-                black_score += game->getBlack();
-                delete game;
-                setup = false;
-                cout << "To continue playing setup another game" << endl;
-            }
-        }
-        else if (inp == "setup") {
+
+    string command;
+    while (cin >> command) {
+        if (command == "game") {
+//	    controller.beginGame();
+	    // Code from here moved to controller.cc, Controller::beginGame()
+	}
+        else if (command == "setup") {
             head = new Blank{};
             gm = new GameManager{&head};
             game = new Game {&head, gm, nullptr, nullptr};
@@ -63,22 +57,25 @@ int main () {
             gd = new GraphicDisplay {*gm, 8, 8};
             gm->attach(gd);
 
-	        cin >> inp;
-            if (inp == "custom") {
+            
+	    string arg;
+            cin >> arg;
+	    if (arg == "custom") {
                 game->customSetup();
                 setup = true;
             }
-            else if (inp == "default") {
+            else if (arg == "default") {
                 game->defaultSetup();
                 setup = true;
             }
             else {
-                cout << "Invalid command " << inp << " use list for more options" << endl;
+                cout << "Invalid command " << command << " use list for more options" << endl;
             }	
         }
-        else if (inp == "list") {
+        else if (command == "list") {
+	    // Put all this into a 'showCommandList()' function
             cout << "Commands:" << endl;
-            cout << "- game" << endl;
+            cout << " - game" << endl;
             cout << " - setup" << endl;
             cout << "\t followed by either <default> or <custom>" << endl;
         }
