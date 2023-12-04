@@ -1,50 +1,110 @@
+#include "board.h"
 #include "bishop.h"
-
-Bishop::Bishop (Cell *next, int x, int y, Colour col):
-    next{next}, x{x}, y{y}, col{col}, alive{true} {}
-
-Bishop::~Bishop () {
-    delete next;
+#include <string>
+// static helpers 
+static bool onRight(int i){
+	return (7 == (i % 8)) ? true : false;
 }
 
-void Bishop::move (int x1, int y1, int x2, int y2) {
-    if (x == x1 && y == y1 && alive) {
-        x = x2;
-        y = y2;
-    }
-    else return next->move(x1, y1, x2, y2);
+static bool onLeft(int i){
+	return (0 == (i % 8)) ? true : false;
 }
 
-Colour Bishop::getColour (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) return col;
-    else return next->getColour(x1, y1);
+// 2 Parameter ctor
+Bishop::Bishop(int pos, bool isWhite) : Piece(pos, isWhite) {}
+
+// returns if the Piece is empty or not
+bool Bishop::isEmpty() const{
+	return false;
 }
-void Bishop::setDead (int x1, int y1) {
-    if (x1 == x && y1 == y && alive) alive = false;
-    else { next->setDead(x1, y1); }
+
+// determines whether a Bishop can move to the end coordinates
+bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b) const {
+	int begin = getPos(start);
+	int fin = getPos(end);
+
+	// moving down on the right diagonal
+	if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin < fin) {
+		while (true) {
+			begin += 7;
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+				return true;
+			}
+			else if (begin == fin && b[begin]->isEmpty()) {
+				return true;
+			}
+			else if (!b[begin]->isEmpty()) {
+				return false;
+			}
+		}
+	}
+
+	// moving up on the right diagonal
+	else if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin > fin) {
+		while (true) {
+			begin -= 7;
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+				return true;
+			}
+			else if (begin == fin && b[begin]->isEmpty()) {
+				return true;
+			}
+			else if(!b[begin]->isEmpty()) {
+				return false;
+			}
+		} 
+	}
+
+	// moving down on the left diagonal
+	else if (begin % 9 == fin % 9 && begin < fin) {
+		if(onLeft(begin)){
+				return false;
+		}
+		while (true) {
+			begin += 9;
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+				return true;
+			}
+			else if (begin == fin && b[begin]->isEmpty()) {
+				return true;
+			}
+			else if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			else if(onRight(begin)){
+				return false;
+			}
+		} 
+	}
+
+	// moving up on the left diagonal
+	else if (begin % 9 == fin % 9 && begin > fin) {
+		if (onRight(begin)){
+				return false;
+		}
+		while (true) {
+			begin -= 9;
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+				return true;
+			}
+			else if (begin == fin && b[begin]->isEmpty()) {
+				return true;
+			}
+			else if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			else if(onLeft(begin)){
+				return false;
+			}
+		} 
+	}
+	else {
+		return false;
+	}
 }
-void Bishop::setAlive (int x1, int y1) {
-    if (x1 == x && y1 == y) alive = true;
-    else { next->setAlive(x1, y1); }
+
+// returns uppercase or lowercase b, depending on which Player's turn it is
+char Bishop::Type() const {
+	return isWhite() ? 'B' : 'b';
 }
-char Bishop::getTile (int x1, int y1) {
-    if (x1 == x && y1 == y && col == Colour::WHITE && alive) return 'b';
-    else if (x1 == x && y1 == y && alive) return 'B';
-    else return next->getTile(x1, y1);
-}
-void Bishop::setOpening (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) {
-        first_move = false;
-    }
-    else {
-        return next->setOpening(x1, y1);
-    }
-}
-bool Bishop::getOpening (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) {
-        return first_move;
-    }
-    else {
-        return next->getOpening(x1, y1);
-    }
-}
+

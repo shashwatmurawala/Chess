@@ -1,49 +1,203 @@
+#include <string>
+#include "piece.h"
 #include "queen.h"
+#include <iostream>
 
-Queen::Queen (Cell *next, int x, int y, Colour col):
-    next{next}, x{x}, y{y}, col{col}, alive{true} {}
-
-Queen::~Queen () {
-    delete next;
+//static helper functions
+static bool onRight(int i){
+	return (7 == (i % 8)) ? true : false;
 }
 
-void Queen::move (int x1, int y1, int x2, int y2) {
-    if (x == x1 && y == y1 && alive) {
-        x = x2;
-        y = y2;
-    }
-    else return next->move(x1, y1, x2, y2);
+static bool onLeft(int i){
+	return (0 == (i % 8)) ? true : false;
 }
-Colour Queen::getColour (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) return col;
-    else return next->getColour(x1, y1);
+
+// 2 Parameter ctor
+Queen::Queen(int pos, bool isWhite): Piece(pos,isWhite){}
+
+// determines whether a Queen can move to the desired end coordinates
+bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b) const{
+	int begin = getPos(start);
+	int fin = getPos(end);
+
+	// Queen is moving upwards
+	if ((begin % 8 == fin % 8) && begin > fin) {
+		begin -= 8;
+		while (begin != fin) {
+			if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			begin -=8;
+		}
+		if (b[begin]->isEmpty()) {
+			return true;
+		}
+		else if (b[begin]->isWhite() == isWhite()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	// Queen is moving downwards
+	else if ((begin % 8 == fin % 8) && begin < fin) {
+		begin += 8;
+		while (begin != fin) {
+			if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			begin +=8;
+		}
+		if (b[begin]->isEmpty()) {
+			return true;
+		}
+		else if (b[begin]->isWhite() == isWhite()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	// Queen is moving leftwards
+	else if ((begin / 8) == (fin / 8) && (begin > fin)) {
+		begin--;
+		while (begin != fin) {
+			if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			begin--;
+		}
+		if (b[begin]->isEmpty()) {
+			return true;
+		}
+		else if (b[begin]->isWhite() == isWhite()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	// Queen is moving rightwards
+	else if ((begin / 8) == (fin / 8) && (begin < fin)) {
+		begin++;
+		while (begin != fin) {
+			if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			begin++;
+		}
+		if (b[begin]->isEmpty()) {
+			return true;
+		}
+		else if (b[begin]->isWhite() == isWhite()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	// Queen is moving diagonally downwards
+	else if (begin % 9 == fin % 9 && begin < fin) {
+		if(onLeft(begin)){
+				return false;
+		}
+		while (true) {
+			begin += 9;
+			if(begin > 63){
+				return false;
+			}
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+				return true;
+			}
+			else if (begin == fin && b[begin]->isEmpty()) {
+				return true;
+			}
+			else if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			else if(onRight(begin)){
+				return false;
+			}
+		}
+	}
+
+	// Queen is moving diagonally upwards
+	else if (begin % 9 == fin % 9 && begin > fin) {
+		if (onRight(begin)){
+				return false;
+		}
+		while (true) {
+			begin -= 9;
+			if(begin < 0){
+				return false;
+			}
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+				return true;
+			}
+			else if (begin == fin && b[begin]->isEmpty()) {
+				return true;
+			}
+			else if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			else if(onLeft(begin)){
+				return false;
+			}
+		} 
+	}
+
+	// corners
+	else if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin < fin) {
+		while (true) {
+			begin += 7;
+			if(begin > 63){
+				return false;
+			}
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+				return true;
+			}
+			else if (begin == fin && b[begin]->isEmpty()) {
+				return true;
+			}
+			else if (!b[begin]->isEmpty()) {
+				return false;
+			}
+		}
+	}
+
+	// corners
+	else if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin > fin) {
+		while (true) {
+			begin -= 7;
+			if(begin < 0){
+				return false;
+			}
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+				return true;
+			}
+			else if (begin == fin && b[begin]->isEmpty()) {
+				return true;
+			}
+			else if (!b[begin]->isEmpty()) {
+				return false;
+			}
+		}
+	}
+	else {
+		return false;
+	}
 }
-void Queen::setDead (int x1, int y1) {
-    if (x1 == x && y1 == y && alive) alive = false;
-    else { next->setDead(x1, y1); }
+
+// returns a char representing the Queen for whichever player's turn it is
+char Queen::Type() const {
+	return isWhite() ? 'Q' : 'q';
 }
-void Queen::setAlive (int x1, int y1) {
-    if (x1 == x && y1 == y && alive) alive = true;
-    else { next->setAlive(x1, y1); }
-}
-char Queen::getTile (int x1, int y1 ) {
-    if (x1 == x && y1 == y && col == Colour::WHITE && alive) return 'q';
-    else if (x1 == x && y1 == y) return 'Q';
-    else return next->getTile(x1, y1);
-}
-void Queen::setOpening (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) {
-        first_move = false;
-    }
-    else {
-        return next->setOpening(x1, y1);
-    }
-}
-bool Queen::getOpening (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) {
-        return first_move;
-    }
-    else {
-        return next->getOpening(x1, y1);
-    }
+
+// returns if the Queen object is empty
+bool Queen::isEmpty() const {
+	return false;
 }

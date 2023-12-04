@@ -1,49 +1,115 @@
+#include <string>
+#include "piece.h"
 #include "rook.h"
 
-Rook::Rook (Cell *next, int x, int y, Colour col):
-    next{next}, x{x}, y{y}, col{col}, alive{true} {}
+// 2 Parameter ctor
+Rook::Rook(int pos, bool isWhite) : Piece{pos, isWhite}, firstMove{true} {}
 
-Rook::~Rook () {
-    delete next;
+// determines if a Rook can move to the desired end coordinate
+bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b) const {
+	int begin = getPos(start);
+	int fin = getPos(end);
+
+	// Rook is moving upwards
+	if ((begin % 8 == fin % 8) && begin > fin) {
+		begin -= 8;
+		while (begin != fin) {
+			if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			begin -=8;
+		}
+		if (b[begin]->isEmpty()) {
+			return true;
+		}
+		else if (!b[begin]->isEmpty() && b[begin]->isWhite() == isWhite()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	// Rook is moving downwards
+	else if ((begin % 8 == fin % 8) && begin < fin) {
+		begin += 8;
+		while (begin != fin) {
+			if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			begin +=8;
+		}
+		if (b[begin]->isEmpty()) {
+			return true;
+		}
+		else if (!b[begin]->isEmpty() && b[begin]->isWhite() == isWhite()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	// Rook is moving rightwards
+	else if ((begin / 8) == (fin / 8) && (begin > fin)) {
+		begin--;
+		while (begin != fin) {
+			if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			begin--;
+		}
+		if (b[begin]->isEmpty()) {
+			return true;
+		}
+		else if (!b[begin]->isEmpty() && b[begin]->isWhite() == isWhite()) {
+			return false;
+		}
+		else {
+			return true;
+		}	
+	}
+
+	// Rook is moving leftwards
+	else if ((begin / 8) == (fin / 8) && (begin < fin)) {
+		begin++;
+		while (begin != fin) {
+			if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			begin++;
+		}
+		if (b[begin]->isEmpty()) {
+			return true;
+		}
+		else if (!b[begin]->isEmpty() && b[begin]->isWhite() == isWhite()) {
+			return false;
+		}
+		else {
+			return true;
+		}	
+	}
+	else {
+		return false;
+	}
 }
 
-void Rook::move (int x1, int y1, int x2, int y2) {
-    if (x == x1 && y == y1 && alive) {
-        x = x2;
-        y = y2;
-    }
-    else return next->move(x1, y1, x2, y2);
+// returns a char representin a Rook depending on whose turn it is
+char Rook::Type() const {
+	return isWhite() ? 'R' : 'r';
 }
-Colour Rook::getColour (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) return col;
-    else return next->getColour(x1, y1);
+
+// returns if a Rook is empty
+bool Rook::isEmpty() const {
+	return false;
 }
-void Rook::setDead (int x1, int y1) {
-    if (x1 == x && y1 == y && alive) alive = false;
-    else { next->setDead(x1, y1); }
+
+// sets the firstMove field to false
+void Rook::moved() {
+	firstMove = false;
 }
-void Rook::setAlive (int x1, int y1) {
-    if (x1 == x && y1 == y && alive) alive = true;
-    else { next->setAlive(x1, y1); }
-}
-char Rook::getTile (int x1, int y1) {
-    if (x1 == x && y1 == y && col == Colour::WHITE && alive) return 'r';
-    else if (x1 == x && y1 == y) return 'R';
-    else return next->getTile(x1, y1);
-}
-void Rook::setOpening (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) {
-        first_move = false;
-    }
-    else {
-        return next->setOpening(x1, y1);
-    }
-}
-bool Rook::getOpening (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) {
-        return first_move;
-    }
-    else {
-        return next->getOpening(x1, y1);
-    }
+
+// returns the firstMove field on a Rook object
+bool Rook::first() const {
+	return firstMove;
 }

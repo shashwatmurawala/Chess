@@ -1,14 +1,15 @@
-#ifndef ___KNIGHT___
-#define ___KNIGHT___
+#ifndef ___EMPTY___
+#define ___EMPTY___
 
 #include <string>
 #include "piece.h"
 
-class Knight: public Piece {
+class Empty: public Piece {
 public:
-	Knight(int pos, bool isWhite);
-	bool isEmpty() const override;
+	Empty(int index);
+	~Empty();
 	bool canMove(const std::string &start, const std::string &end, Piece ** b) const override;
+	bool isEmpty() const override;
 	char Type() const override;
 };
 

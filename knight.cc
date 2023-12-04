@@ -1,49 +1,39 @@
+#include <string>
+#include "board.h"
 #include "knight.h"
 
-Knight::Knight (Cell *next, int x, int y, Colour col):
-    next{next}, x{x}, y{y}, col{col}, alive{true} {}
+// 2 Parameter ctor
+Knight::Knight(int pos, bool isWhite): Piece(pos, isWhite) {}
 
-Knight::~Knight () {
-    delete next;
+// returns whether a Knight is empty
+bool Knight::isEmpty() const{
+	return false;
 }
 
-void Knight::move (int x1, int y1, int x2, int y2) {
-    if (x == x1 && y == y1 && alive) {
-        x = x2;
-        y = y2;
-    }
-    else return next->move(x1, y1, x2, y2);
+// determines if a Knight can move to the desired end coordinates
+bool Knight::canMove(const std::string &start,const std::string &end, Piece ** b) const {
+	int begin_x = getPos(start) % 8;
+	int begin_y = getPos(start) / 8;
+	int fin_x = getPos(end) % 8;
+	int fin_y = getPos(end) / 8;
+	if(!b[getPos(end)]->isEmpty() && isWhite() == b[getPos(end)]->isWhite()){
+		return false;
+	}
+	// position changes x +/- 1 and y +/- 2
+	if (abs(begin_x - fin_x) == 1 && abs(begin_y - fin_y) == 2 ) {
+		return true;
+	}
+
+	// position changes x +/- 2 and y +/- 1
+	else if (abs(begin_x - fin_x) == 2 && abs(begin_y - fin_y) == 1){
+		return true;
+	}
+	else {
+		return false;
+	}
 }
-Colour Knight::getColour (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) return col;
-    else return next->getColour(x1, y1);
-}
-void Knight::setDead (int x1, int y1) {
-    if (x1 == x && y1 == y && alive) alive = false;
-    else { next->setDead(x1, y1); }
-}
-void Knight::setAlive (int x1, int y1) {
-    if (x1 == x && y1 == y) alive = true;
-    else { next->setAlive(x1, y1); }
-}
-char Knight::getTile (int x1, int y1) {
-    if (x1 == x && y1 == y && col == Colour::WHITE && alive) return 'n';
-    else if (x1 == x && y1 == y && alive) return 'N';
-    else return next->getTile(x1, y1);
-}
-void Knight::setOpening (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) {
-        first_move = false;
-    }
-    else {
-        return next->setOpening(x1, y1);
-    }
-}
-bool Knight::getOpening (int x1, int y1) {
-    if (x == x1 && y == y1 && alive) {
-        return first_move;
-    }
-    else {
-        return next->getOpening(x1, y1);
-    }
+
+// returns the character for a Knight representing which player's turn it is.
+char Knight::Type() const {
+	return isWhite() ? 'N' : 'n';
 }
