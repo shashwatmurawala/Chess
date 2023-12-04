@@ -22,7 +22,7 @@ class Game {
     int col = 8;
     int white_score = 0;
     int black_score = 0;
-    Board **head;
+    Cell **head;
     GameManager *gm;
     Stack stack;
     std::pair<int, int> white_king;
@@ -52,7 +52,7 @@ class Game {
         bool isStalemate (char team);
         bool validMove(int x1, int y1, int x2, int y2);
     public:
-        Game (Board **b, GameManager *gm, Player *player1, Player *player2);
+        Game (Cell **b, GameManager *gm, Player *player1, Player *player2);
         ~Game ();
         void defaultSetup ();
         void customSetup();

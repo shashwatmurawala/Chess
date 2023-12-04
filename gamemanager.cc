@@ -7,7 +7,7 @@ char GameManager::getTile (int x1, int y1) const {
     return (*theBoard)->getTile(x1, y1);
 }
 
-Board** GameManager::getBoard () const {
+Cell** GameManager::getBoard () const {
     return theBoard;
 }
 

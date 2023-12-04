@@ -24,19 +24,19 @@
     win.drawString(7, 170, "8");
     for (int i = 1; i < height; i++) {
     	for (int j = 1; j < width; j++) {
-		int row = j * 20;
-		int col = i * 20;
-		char tile = game.getTile(j - 1, i - 1);
-		if ((i + j) % 2 == 0) {
-			win.fillRectangle(row, col, 20, 20, 0);
-		}
-		else {
-			win.fillRectangle(row, col, 20, 20, 3);
-		}
-		if (tile != ' ' && tile != '_') {
-			std::string s {tile};
-			win.drawString(row + 7, col + 15, s);
-		}
-	}
-    }
- }
+         int row = j * 20;
+         int col = i * 20;
+         char tile = game.getTile(j - 1, i - 1);
+         if ((i + j) % 2 == 0) {
+            win.fillRectangle(row, col, 20, 20, 8);
+         }
+         else {
+            win.fillRectangle(row, col, 20, 20, 9);
+         }
+         if (tile != ' ' && tile != '_') {
+            std::string s {tile};
+            win.drawString(row + 7, col + 15, s);
+         }
+	   }
+   }
+}
