@@ -5,8 +5,7 @@
 int getPos(const std::string &cmd) {
 	int col = cmd[0] - 'a';
 	int row = cmd[1] - '1';
-	row = 7 - row;
-	int pos = 8*row+col; 
+	int pos = 8 * (7 - row) + col; 
 	return pos;
 }
 

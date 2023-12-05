@@ -136,6 +136,7 @@ void Controller::game() {
 
 			if (!board->getTurnStatus()) {
 				board->makeCompMove();
+				cout << *board << endl;
 			} else {
 				cin >> action;
 				if (action == "move") {

@@ -4,6 +4,8 @@
 #include <string>
 #include "piece.h"
 
+class Rook;
+
 class Queen: public Piece {
 public:
 	Queen(int pos, bool isWhite);

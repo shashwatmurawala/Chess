@@ -17,76 +17,76 @@ bool Bishop::isEmpty() const{
 }
 
 bool Bishop::validMove(const std::string &start,const std::string &end, Piece ** b) const {
-	int begin = getPos(start);
-	int fin = getPos(end);
+	int org = getPos(start);
+	int newloc = getPos(end);
 
-	if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin < fin) {
+	if (!(org==0) && !(org == 63) && (org % 7 == newloc % 7) && org < newloc) {
 		while (true) {
-			begin += 7;
-			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+			org += 7;
+			if (org == newloc && (b[org]->isEmpty() || (isWhite() != b[org]->isWhite()))) {
 				return true;
 			}
-			else if (begin == fin && b[begin]->isEmpty()) {
+			else if (org == newloc && b[org]->isEmpty()) {
 				return true;
 			}
-			else if (!b[begin]->isEmpty()) {
+			else if (!b[org]->isEmpty()) {
 				return false;
 			}
 		}
 	}
 
-	else if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin > fin) {
+	else if (!(org==0) && !(org == 63) && (org % 7 == newloc % 7) && org > newloc) {
 		while (true) {
-			begin -= 7;
-			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+			org -= 7;
+			if (org == newloc && (b[org]->isEmpty() || (isWhite() != b[org]->isWhite()))) {
 				return true;
 			}
-			else if (begin == fin && b[begin]->isEmpty()) {
+			else if (org == newloc && b[org]->isEmpty()) {
 				return true;
 			}
-			else if(!b[begin]->isEmpty()) {
+			else if(!b[org]->isEmpty()) {
 				return false;
 			}
 		} 
 	}
 
-	else if (begin % 9 == fin % 9 && begin < fin) {
-		if(onLeft(begin)){
+	else if (org % 9 == newloc % 9 && org < newloc) {
+		if(onLeft(org)){
 				return false;
 		}
 		while (true) {
-			begin += 9;
-			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+			org += 9;
+			if (org == newloc && (b[org]->isEmpty() || (isWhite() != b[org]->isWhite()))) {
 				return true;
 			}
-			else if (begin == fin && b[begin]->isEmpty()) {
+			else if (org == newloc && b[org]->isEmpty()) {
 				return true;
 			}
-			else if (!b[begin]->isEmpty()) {
+			else if (!b[org]->isEmpty()) {
 				return false;
 			}
-			else if(onRight(begin)){
+			else if(onRight(org)){
 				return false;
 			}
 		} 
 	}
 
-	else if (begin % 9 == fin % 9 && begin > fin) {
-		if (onRight(begin)){
+	else if (org % 9 == newloc % 9 && org > newloc) {
+		if (onRight(org)){
 				return false;
 		}
 		while (true) {
-			begin -= 9;
-			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
+			org -= 9;
+			if (org == newloc && (b[org]->isEmpty() || (isWhite() != b[org]->isWhite()))) {
 				return true;
 			}
-			else if (begin == fin && b[begin]->isEmpty()) {
+			else if (org == newloc && b[org]->isEmpty()) {
 				return true;
 			}
-			else if (!b[begin]->isEmpty()) {
+			else if (!b[org]->isEmpty()) {
 				return false;
 			}
-			else if(onLeft(begin)){
+			else if(onLeft(org)){
 				return false;
 			}
 		} 
