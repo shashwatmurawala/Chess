@@ -77,6 +77,7 @@ void game(Board *b){
 			b->makeCompMove();
 			cout << b->sendToDisplay();
 		}
+
 	} else if(b->isP1computer()){
 		while(true){
 			if(b->getTurnStatus()){
