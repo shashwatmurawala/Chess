@@ -48,7 +48,7 @@ void Board::normalSetup(){
 	for (int i = 0; i < 64; ++i) {
 		delete board[i];
 	}
-	gd->clearBoard();
+	gd->blankBoard();
 	// setting up a new black team
 	board[0] = new Rook(0,false); // back row
 	board[1] = new Knight(1,false);
@@ -136,7 +136,7 @@ void Board::place(char piece, const string &cmd) {
 		delete board[index];
 		board[index] = new Empty(index);
 	}
-	gd->setPiece(p,cmd);
+	gd->set(p,cmd);
 }
 
 
@@ -221,7 +221,7 @@ void Board::move(const string &start, const string &end){
 				castle->changePos(61);
 				board[63] = new Empty(63);
 				castle->moved();
-				gd->updateMove('R',"h1","f1");
+				gd->update('R',"h1","f1");
 			}
 			else if (start == "e1" && end == "c1") {
 				Piece *castle = getPiece("a1");
@@ -230,7 +230,7 @@ void Board::move(const string &start, const string &end){
 				castle->changePos(59);
 				board[56] = new Empty(56);
 				castle->moved();
-				gd->updateMove('R',"a1","f1");
+				gd->update('R',"a1","f1");
 			}
 		}
 		else if (board[getPos(end)]->Type() == 'k' && !inCheck) { 
@@ -241,7 +241,7 @@ void Board::move(const string &start, const string &end){
 				castle->changePos(5);
 				board[7] = new Empty(7);
 				castle->moved();
-				gd->updateMove('r',"h8","f8");
+				gd->update('r',"h8","f8");
 			}
 			else if (start == "e8" && end == "c8") {
 				Piece *castle = getPiece("a8");
@@ -250,12 +250,12 @@ void Board::move(const string &start, const string &end){
 				castle->changePos(3);
 				board[0] = new Empty(0);
 				castle->moved();
-				gd->updateMove('r',"a8","d8");
+				gd->update('r',"a8","d8");
 			}
 		}
 		isTurnWhite = (! isTurnWhite);
 		gd->updateTurn(isTurnWhite);
-		gd->updateMove(board[getPos(end)]->Type(),start,end);
+		gd->update(board[getPos(end)]->Type(),start,end);
 		inCheck = isCheck(isTurnWhite);
 		p->moved();
 		
@@ -321,7 +321,7 @@ void Board::endGame(string cmd) {
 		gd->updateScore(false,true);
 	}
 	clearBoard();
-	gd->clearBoard();
+	gd->blankBoard();
 }
 
 // accessor/getter: returns the gameOver field of the Board class
