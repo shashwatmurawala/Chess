@@ -2,6 +2,10 @@
 #define ___SCORE___
 
 #include <string>
+#include "board.h"
+
+class Board;
+class Piece;
 
 class Scoreboard{
 	int whiteScore;

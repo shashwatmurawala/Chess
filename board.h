@@ -68,6 +68,7 @@ class Board {
 
 
 		friend std::ostream& operator<<(std::ostream& out, Board& b);
+		friend class scoreboard;
 };
 
 
