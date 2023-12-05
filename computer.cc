@@ -41,7 +41,7 @@ void Comp::genMove1(Board *b, std::string &first, std::string &last){
 			myTeam.push_back(b->getBoard()[i]);
 		}
 	}
-	std::srand(std::time(nullptr)); // use current time as seed
+	std::srand(std::time(nullptr));
 	int start = std::rand()/((RAND_MAX + 1u)/myTeam.size());
 	Piece *p = myTeam[start];
 	int end = -1;

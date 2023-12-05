@@ -12,13 +12,9 @@ int main() {
 
 	while (cin >> cmd) {
 
-		// setup command
 		if (cmd == "setup") {
 			controller.setup();
-		}
-
-		// game is now running
-		else if (cmd == "game") {
+		}else if (cmd == "game") {
 			controller.players();
 			controller.game();
 		}
