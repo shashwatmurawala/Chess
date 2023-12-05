@@ -3,15 +3,15 @@
 #include <string>
 // static helpers 
 static bool onRight(int i){
-	return (7 == (i % 8)) ? true : false;
+	return (7 == i) ? true : false;
 }
 
 static bool onLeft(int i){
-	return (0 == (i % 8)) ? true : false;
+	return (0 == i) ? true : false;
 }
 
 // 2 Parameter ctor
-Bishop::Bishop(int pos, bool isWhite) : Piece(pos, isWhite) {}
+Bishop::Bishop(int row, int col, bool isWhite) : Piece(row, col, isWhite) {}
 
 // returns if the Piece is empty or not
 bool Bishop::isEmpty() const{
@@ -22,8 +22,8 @@ bool Bishop::isEmpty() const{
 bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b) const {
 	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
 	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
-	int begin = getPos(start);
-	int fin = getPos(end);
+	pair<int, int> begin = getPos(start);
+	pair<int, int> fin = getPos(end);
 
 
 
@@ -61,7 +61,7 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 
 	// moving down on the left diagonal
 	else if (begin % 9 == fin % 9 && begin < fin) {
-		if(onLeft(begin)){
+		if(onLeft(begin.second)){
 				return false;
 		}
 		while (true) {
@@ -75,7 +75,7 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 			else if (!b[begin]->isEmpty()) {
 				return false;
 			}
-			else if(onRight(begin)){
+			else if(onRight(begin.second)){
 				return false;
 			}
 		} 
@@ -83,7 +83,7 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 
 	// moving up on the left diagonal
 	else if (begin % 9 == fin % 9 && begin > fin) {
-		if (onRight(begin)){
+		if (onRight(begin.second)){
 				return false;
 		}
 		while (true) {
@@ -97,7 +97,7 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 			else if (!b[begin]->isEmpty()) {
 				return false;
 			}
-			else if(onLeft(begin)){
+			else if(onLeft(begin.second)){
 				return false;
 			}
 		} 

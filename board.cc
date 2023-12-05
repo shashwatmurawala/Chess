@@ -111,25 +111,25 @@ void Board::place(char piece, const string &cmd) {
 
 	// cases for letters representing the different Pieces
 	if (piece == 'P') {
-		board[index.first][index.second] = Pawn(index, isWhite);
+		board[index.first][index.second] = Pawn(index.first, index.second, isWhite);
 	}
 	else if (piece == 'R') {
-		board[index.first][index.second] = Rook(index,isWhite);
+		board[index.first][index.second] = Rook(index.first, index.second, isWhite);
 	}
 	else if (piece == 'Q') {
-		board[index.first][index.second] = Queen(index,isWhite);
+		board[index.first][index.second] = Queen(index.first, index.second, isWhite);
 	}
 	else if (piece == 'B') {
-		board[index.first][index.second] = Bishop(index,isWhite);
+		board[index.first][index.second] = Bishop(index.first, index.second, isWhite);
 	}
 	else if (piece == 'N') {
-		board[index.first][index.second] = Knight(index,isWhite);
+		board[index.first][index.second] = Knight(index.first, index.second, isWhite);
 	}
 	else if (piece == 'K') {
-		board[index.first][index.second] = King(index,isWhite);
+		board[index.first][index.second] = King(index.first, index.second, isWhite);
 	}
 	else if (piece == 'E') {
-		board[index.first][index.second] = Empty(index);
+		board[index.first][index.second] = Empty(index.first, index.second);
 	}
 	gd->set(p,cmd);
 }

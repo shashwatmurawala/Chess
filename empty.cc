@@ -15,7 +15,7 @@ static int isWhiteSquare(int pos){
 }
 
 // 1 Parameter ctor
-Empty::Empty(int index): Piece{index, true}{}
+Empty::Empty(int row, int col): Piece{row, col, true}{}
 
 // Dtor
 Empty::~Empty(){};

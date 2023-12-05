@@ -5,7 +5,7 @@
 
 class Bishop: public Piece {
 public:
-	Bishop(int pos, bool isWhite);
+	Bishop(int row, int col, bool isWhite);
 	bool canMove(const std::string &start, const std::string &end, Piece ** b) const override;
 	bool isEmpty() const override;
 	char Type() const override;
