@@ -7,13 +7,13 @@ EXEC=chess
 
 # First target in the makefile is the default target.
 $(EXEC): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(EXEC)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -lX11 -o $(EXEC)  $(LIBFLAGS)
 
 %.o: %.cc 
-	$(CXX) -c -o $@ $< $(CXXFLAGS)
+	$(CXX) -c -o $@ $< $(CXXFLAGS) $(LIBFLAGS)
 
 -include ${DEPENDS}
 
-.PHONY: clean 
+.PHONY: clean tests
 clean:
 	rm  -f $(OBJECTS) $(DEPENDS) $(EXEC)

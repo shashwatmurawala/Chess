@@ -7,39 +7,33 @@ GraphicsDisplay::GraphicsDisplay(){
 	xw= new Xwindow(windowsize,windowsize);
 	//creates checkboard pattern
 	clearBoard();
-	//makes lines around the Board. Acts as a border
-	for(int i = 0; i < 5; ++i){
-		xw->drawLine(62-i, 58, 62-i, 562);
-		xw->drawLine(62, 62-i, 562,62-i);
-		xw->drawLine(558+i, 62, 558+i,562);
-		xw->drawLine(62,558+i,562,558+i);
-	}
 
 	//create coordinates for chess.
-	for(int i = 0; i < gridsize -2; ++i){
+	for(int i = 0; i < 8; ++i){
 		string s = to_string(flipRow(i));
-		xw->drawBigString(xPadding, (i+1)*cellsize+yPadding+xPadding, s ,Xwindow::Black);
+		xw->drawString(xPadding, (i+1)*cellsize+yPadding+xPadding, s);
 		s = 'a' + i;
-		xw->drawBigString((i+1)*cellsize+xPadding, 9*cellsize + yPadding + xPadding, s, Xwindow::Black);
+		xw->drawString((i+1)*cellsize+xPadding, 9*cellsize + yPadding + xPadding, s);
 	}
-	stringstream blkStream;
-        stringstream whtStream;
-        blkStream<<fixed<<setprecision(1)<<blackScore;
-        string blkScore = blkStream.str();
-        whtStream<<fixed<<setprecision(1)<<whiteScore;
-        string whtScore = whtStream.str();
-        string s = "B: " + blkScore + "  W: " + whtScore;
-	xw->drawBigString(0,50,s,Xwindow::Black);
+	stringstream ss1;
+	stringstream ss2;
+	ss1<<blackScore;
+	ss2<<whiteScore;
+	string black = ss1.str();
+	string white = ss2.str();
+	string s = "Black: " + black + "  White: " + white;
+	xw->drawString(0,50,s);
 	updateTurn(true);
 }
+
 GraphicsDisplay::~GraphicsDisplay(){
 	delete xw;
 }
 
 void GraphicsDisplay::clearBoard(){
 	//creates the checkerboard pattern, if there's any text in that area, it will be filled with the pattern - as if the board were cleared.
-	for (int i = 1; i < gridsize-1; ++i){
-		for (int j = 1; j< gridsize-1; ++j){
+	for (int i = 1; i <= 8; ++i){
+		for (int j = 1; j<= 8; ++j){
 			if((i % 2 == 0 && j % 2 ==  0) || (i % 2 == 1 && j % 2 == 1)){
 				xw->fillRectangle(i*cellsize, j*cellsize, cellsize, cellsize, colourNegative);
 			}
@@ -53,75 +47,57 @@ void GraphicsDisplay::clearBoard(){
 void GraphicsDisplay::defaultDisplay(){
 	string s; 
 	//fill in black pieces at the top
-	for(int i = 1; i < gridsize-1; ++i){
+	for(int i = 1; i <= 8; ++i){
 		if(i == 1 || i == 8){
-			s = "Rook";
+			s = "r";
 		}
 		else if(i == 2|| i == 7){
-			s = "Knight";
+			s = "n";
 		}
 		else if(i == 3 || i == 6){
-			s = "Bishop";
+			s = "b";
 		}
 		else if(i == 4){
-			s = "Queen";
+			s = "q";
 		}
 		else{
-			s = "King";
+			s = "k";
 		}
-		xw->drawString(i*cellsize+xPadding, cellsize+yPadding, s, Xwindow::Black);
+		xw->drawString(i*cellsize+xPadding, cellsize+yPadding, s);
 	}
 	// fill in black pawns
-	for(int i =1; i< gridsize-1; ++i){
-		xw->drawString(i*cellsize+xPadding, 2*cellsize + yPadding, "Pawn", Xwindow::Black);
+	for(int i =1; i<= 8; ++i){
+		xw->drawString(i*cellsize+xPadding, 2*cellsize + yPadding, "p");
 	}
 	// fill in white pieces
-	for(int i = 1; i < gridsize-1; ++i){
+	for(int i = 1; i <= 8; ++i){
 		if(i == 1 || i == 8){
-			s = "Rook";
+			s = "R";
 		}
 		else if(i == 2|| i == 7){
-			s = "Knight";
+			s = "N";
 		}
 		else if(i == 3 || i == 6){
-			s = "Bishop";
+			s = "B";
 		}
 		else if(i == 4){
-			s = "Queen";
+			s = "Q";
 		}
 		else{
-			s = "King";
+			s = "K";
 		}
-		xw->drawString(i*cellsize+xPadding, cellsize*8 +yPadding, s, Xwindow::White);
+		xw->drawString(i*cellsize+xPadding, cellsize*8 +yPadding, s);
 	}
 	// fill in white pawns
-	for(int i =1; i< gridsize-1; ++i){
-		xw->drawString(i*cellsize+xPadding, 7*cellsize + yPadding, "Pawn", Xwindow::White);
+	for(int i =1; i<= 8; ++i){
+		xw->drawString(i*cellsize+xPadding, 7*cellsize + yPadding, "P");
 	}
 }
 
 
 string pieceToString (char piece){
-	if(piece == 'k' || piece == 'K'){//king
-		return "King";
-	}
-	else if(piece == 'b' || piece == 'B'){//bishop
-		return "Bishop";
-	}
-	else if(piece == 'r' || piece == 'R'){//rook
-		return "Rook";
-	}
-	else if(piece == 'n' || piece == 'N'){//knight
-		return "Knight";
-	}
-	else if(piece == 'q' || piece == 'Q'){//Queen
-		return "Queen";
-	}
-	else if(piece == 'p' || piece == 'P'){//Pawn
-		return "Pawn";
-	}
-	return " ";
-
+	string p(1, piece);
+	return p;
 }
 
 int GraphicsDisplay::findPieceColour(char piece){
@@ -144,34 +120,11 @@ void GraphicsDisplay::setPiece(char piece, const string &start){
 	string s = pieceToString(piece);
 	int pieceColour = findPieceColour(piece);	
 	xw->fillRectangle(col*cellsize, row*cellsize, cellsize, cellsize, rectFillColour);
-	xw->drawString(col*cellsize + xPadding, row*cellsize + yPadding, s, pieceColour);
+	xw->drawString(col*cellsize + xPadding, row*cellsize + yPadding, s);
 }
 
 int GraphicsDisplay::flipRow(int row){
-	if(row == 0){
-		return 8;
-	}
-	else if(row == 1){
-		return 7;
-	}
-	else if(row == 2){
-		return 6;
-	}
-	else if(row == 3){
-		return 5;
-	}
-	else if(row ==4){
-		return 4;
-	}
-	else if(row == 5){
-		return 3;
-	}
-	else if(row == 6){
-		return 2;
-	}
-	else{
-		return 1;
-	}
+	return (8 - row);
 }
 
 void GraphicsDisplay::updateMove(char piece,const string &start, const string &end){
@@ -194,8 +147,9 @@ void GraphicsDisplay::updateMove(char piece,const string &start, const string &e
 	//Then Writes in the string name of the piece. 
 	//        void drawString(int x, int y, std::string msg, int colour = Black);
 
-	xw->drawString(colEnd * cellsize + xPadding, (rowEnd)*cellsize + yPadding , s, pieceColour);
+	xw->drawString(colEnd * cellsize + xPadding, (rowEnd)*cellsize + yPadding , s);
 }
+
 void GraphicsDisplay::clearTop(bool forTurn){
 if(forTurn){
 xw->fillRectangle(360,0,265 ,50,Xwindow::White);
@@ -204,6 +158,7 @@ else{
 	xw->fillRectangle(0,0,300,50,Xwindow::White);
 }
 }
+
 void GraphicsDisplay::updateScore(bool isWhiteWinner, bool isStalemate){
 	if(isStalemate){
 		whiteScore += 0.5;
@@ -225,11 +180,12 @@ void GraphicsDisplay::updateScore(bool isWhiteWinner, bool isStalemate){
 	whtStream<<fixed<<setprecision(1)<<whiteScore;
 	string whtScore = whtStream.str();
 	string s = "B:" + blkScore + "  W:" + whtScore;
-	xw->drawBigString(0,50,s,Xwindow::Black);
+	xw->drawString(0,50,s);
 }
+
 void GraphicsDisplay::updateTurn(bool white){
 string s = (white)? "Turn: White" : "Turn: Black";
 clearTop(true);
-xw->drawBigString(375, 50, s, Xwindow::Black);
+xw->drawString(375, 50, s);
 }
 

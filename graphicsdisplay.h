@@ -5,11 +5,11 @@
 class GraphicsDisplay{
 	int windowsize = 625;
 	Xwindow* xw = nullptr;
-	int colourPositive = Xwindow::Brown;
-	int colourNegative = Xwindow::Orange;
+	int colourPositive = Xwindow::White;
+	int colourNegative = Xwindow::Green;
 	int flipRow(int row);
-	float blackScore = 0;
-	float whiteScore = 0;
+	int blackScore = 0;
+	int whiteScore = 0;
 	
 	public:
 	//ctor
