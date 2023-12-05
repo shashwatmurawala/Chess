@@ -17,11 +17,10 @@
 
 using namespace std;
 
+// 2 Parameter ctor
 Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true},
 		inCheck{false}, gameOver{true}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
-			for (int i = 0; i < 64; ++i) {
-				board[i] = new Empty(i);
-			}
+			clearBoard();
 			if (player1 > 0) {
 				delete p1;
 				p1 = new Comp(player1, true);
@@ -33,20 +32,22 @@ Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true}
 		}
 
 void Board::clearBoard(){
-	for (int i = 0; i < 64; ++i) {
-		delete board[i];
-		board[i] = new Empty(i);
+	for (int i = 0; i < 8; ++i) {
+		vector<Piece> row;
+		for (int j = 0; j < 8; ++j){
+			Empty cur{i};
+			row.emplace_back(cur);
+		}
+		board.emplace_back(row);
 	}
 }
 
 void Board::normalSetup(){
 	setTurn("white");
 	gameOn();
-	for (int i = 0; i < 64; ++i) {
-		delete board[i];
-	}
 	gd->blankBoard();
-	board[0] = new Rook(0,false); 
+	// setting up a new black team
+	board[0] = new Rook(0,false); // back row
 	board[1] = new Knight(1,false);
 	board[2] = new Bishop(2,false);
 	board[3] = new Queen(3,false);
@@ -55,15 +56,16 @@ void Board::normalSetup(){
 	board[6] = new Knight(6,false);
 	board[7] = new Rook(7, false);
 	for (int i = 8; i < 16; ++i) {
-		board[i] = new Pawn(i,false);
+		board[i] = new Pawn(i,false); // row of pawns
 	}
 	for (int j = 16; j < 48; ++j) {
-		board[j] = new Empty(j);
+		board[j] = new Empty(j); // empty space
 	}
+	// setting up a new white team
 	for (int k = 48; k < 56; ++k) {
-		board[k] = new Pawn(k,true);
+		board[k] = new Pawn(k,true); // row of pawns
 	}
-	board[56] = new Rook(56,true);
+	board[56] = new Rook(56,true); // back row
 	board[57] = new Knight(57,true);
 	board[58] = new Bishop(58,true);
 	board[59] = new Queen(59,true);
@@ -93,39 +95,32 @@ void Board::newPlayers(int player1, int player2){
 
 void Board::place(char piece, const string &cmd) { 
 	char p = piece;
-	int index = getPos(cmd);
+	pair<int, int> index = getPos(cmd);
 	bool isWhite = ('A' < piece) && ('Z' > piece);
 	if (!isWhite){
 		piece = piece - 'a' + 'A';
 	}
 
 	if (piece == 'P') {
-		delete board[index];
-		board[index] = new Pawn(index, isWhite);
+		board[index.first][index.second] = Pawn(index.first, index.second, isWhite);
 	}
 	else if (piece == 'R') {
-		delete board[index];
-		board[index] = new Rook(index,isWhite);
+		board[index.first][index.second] = Rook(index.first, index.second, isWhite);
 	}
 	else if (piece == 'Q') {
-		delete board[index];
-		board[index] = new Queen(index,isWhite);
+		board[index.first][index.second] = Queen(index.first, index.second, isWhite);
 	}
 	else if (piece == 'B') {
-		delete board[index];
-		board[index] = new Bishop(index,isWhite);
+		board[index.first][index.second] = Bishop(index.first, index.second, isWhite);
 	}
 	else if (piece == 'N') {
-		delete board[index];
-		board[index] = new Knight(index,isWhite);
+		board[index.first][index.second] = Knight(index.first, index.second, isWhite);
 	}
 	else if (piece == 'K') {
-		delete board[index];
-		board[index] = new King(index,isWhite);
+		board[index.first][index.second] = King(index.first, index.second, isWhite);
 	}
 	else if (piece == 'E') {
-		delete board[index];
-		board[index] = new Empty(index);
+		board[index.first][index.second] = Empty(index.first, index.second);
 	}
 	gd->set(p,cmd);
 }

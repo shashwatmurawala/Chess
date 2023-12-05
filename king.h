@@ -7,7 +7,7 @@
 class King: public Piece {
 	bool firstMove;
 public:
-	King(int index, bool white);
+	King(int row, int col, bool white);
 	~King();
 	bool validMove(const std::string &start, const std::string &end, Piece ** b) const override;
 	bool isEmpty() const override;
