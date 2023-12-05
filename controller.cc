@@ -36,8 +36,6 @@ void Controller::setup() {
 	string coord;
 
 	while (cin >> action) {
-
-		// placing a piece
 		if (action[0] == '+') {
 			cin >> piece >> coord;
 			if (coord[0] >= 'a' && coord[0] <= 'h' && 
@@ -46,33 +44,23 @@ void Controller::setup() {
 				cout << *board << endl;
 			}
 		}
-
-		// setting whose turn is next
 		else if (action[0] == '=') {
 			cin >> colour;
 			board->setTurn(colour);
 		}
-
-		// removing a piece
 		else if (action[0] == '-') {
 			cin >> coord;
 			if (coord[0] >= 'a' && coord[0] <= 'h' &&
 				coord[1] >= '1' && coord[1] <= '8') {
-				// insert remove method
 				board->place('e',coord);
 				cout << *board << endl;
 			}
 		}
-
-		// complete setup mode
 		else if (action == "done" && board->validBoard()) {
-			// check for valid board before exiting
 			board->gameOn();	
 			break;
 		}
-
 		else if (action == "done" && !board->validBoard()) {
-			// check for valid board before exiting
 			cout << "Invalid board. Continue placing pieces." << endl;
 		}
 
@@ -112,13 +100,12 @@ void Controller::game() {
 
 				if (action == "move") {
 					cin >> start >> end;
-					// insert move method
 					if(start.length() != 2 || end.length() != 2){
 						cout << "Invalid move. Try again." << endl;
 						continue;
 					}
 					board->move(start,end);
-					if (board->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+					if (board->canPawnPromote()) {
 						cout << "Your pawn has been promoted. Select a piece" << endl;
 						string prom;
 						cin >> prom;
@@ -153,13 +140,12 @@ void Controller::game() {
 				cin >> action;
 				if (action == "move") {
 					cin >> start >> end;
-					// insert move method
 					if(start.length() != 2 || end.length() != 2){
 						cout << "Invalid move. Try again." << endl;
 						continue;
 					}
 					board->move(start,end);
-					if (board->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+					if (board->canPawnPromote()) {
 						cout << "Your pawn has been promoted. Select a piece" << endl;
 						string prom;
 						cin >> prom;
@@ -183,17 +169,15 @@ void Controller::game() {
 			}
 		}
 	} else {
-		while (cin >> action) { // 
-			// move command
+		while (cin >> action) {
 			if (action == "move") {
 				cin >> start >> end;
-				// insert move method
 				if(start.length() != 2 || end.length() != 2){
 					cout << "Invalid move. Try again." << endl;
 					continue;
 				}
 				board->move(start,end);
-				if (board->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+				if (board->canPawnPromote()) {
 					cout << "Your pawn has been promoted. Select a piece" << endl;
 					string prom;
 					bool validProm = false;
@@ -221,7 +205,6 @@ void Controller::game() {
 				cout << *board << endl;
 			}
 			else if (action == "resign") {
-				// insert resign method
 				if(board->getTurnStatus()){
 					board->endGame("white resigns");
 				} else {
@@ -242,7 +225,6 @@ void Controller::players() {
 
 	cin >> p1 >> p2;
 
-	// setup Board with humans or computers
 	if (p1 == "human") {
 		ip1 = 0;
 	}

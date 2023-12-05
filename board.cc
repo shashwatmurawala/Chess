@@ -54,8 +54,8 @@ void Board::normalSetup(){
 	board[5] = new Bishop(5,false);
 	board[6] = new Knight(6,false);
 	board[7] = new Rook(7, false);
-	for (int i = 8; i < 16; ++i) {
-		board[i] = new Pawn(i,false);
+	for (int i = 0; i < 8; ++i) {
+		board[i + 8] = new Pawn(i,false);
 	}
 	for (int j = 16; j < 48; ++j) {
 		board[j] = new Empty(j);

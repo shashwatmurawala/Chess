@@ -79,7 +79,11 @@ void GraphicsDisplay::set(char piece, const string &original){
 	string s(1, piece);
 	int pieceColour = (piece >= 'A' && piece <= 'Z')? Xwindow::White : Xwindow::Black;	
 	w->fillRectangle(col * 64, row * 64, 64, 64, rectFillColour);
-	w->drawString(col * 64 + 16, row * 64 + 32, s);
+	if (s == "e"){
+		w->drawString(col * 64 + 16, row * 64 + 32, " ");
+	}else{
+		w->drawString(col * 64 + 16, row * 64 + 32, s);
+	}
 }
 
 int GraphicsDisplay::reverse(int row){
@@ -87,7 +91,6 @@ int GraphicsDisplay::reverse(int row){
 }
 
 void GraphicsDisplay::update(char piece,const string &original, const string &newpos){
-	//gets originaling coordinates for cells. string information for piece, and the Colour of the piece on the board.
 	int ogrow = reverse(original[1] - '1');
 	int ogcol = original[0] - 'a' + 1;
 	int rownewpos = reverse(newpos[1] - '1');
@@ -96,15 +99,8 @@ void GraphicsDisplay::update(char piece,const string &original, const string &ne
 	int pieceColour = (piece >= 'A' && piece <= 'Z')? Xwindow::White : Xwindow::Black;
 	int rectFillColouroriginal = rectcol(ogcol,ogrow);
 	int rectFillColournewpos = rectcol(colnewpos,rownewpos);
-	//first fill rectangle of original position
 	w->fillRectangle(ogcol * 64, ogrow * 64, 64, 64, rectFillColouroriginal);
-	// void fillRectangle(int x, int y, int width, int height, int colour=Black);
-	//Then fills rectangle of newpos position(this takes out any existing piece string on the space)
 	w->fillRectangle(colnewpos * 64, rownewpos * 64, 64, 64, rectFillColournewpos);
-
-
-	//Then Writes in the string name of the piece. 
-	//        void drawString(int x, int y, std::string msg, int colour = Black);
 
 	w->drawString(colnewpos * 64 + 16, (rownewpos)*64 + 32 , s);
 }
