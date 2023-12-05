@@ -1,33 +1,23 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "controller.h"
+#include "board.h"
 using namespace std;
 
+bool requiresDefaultSetup = true;
+GraphicsDisplay *g = nullptr;
 
-Controller::Controller(GameManager& gm): gm {gm}, graphicView {nullptr} {
-	board = gm.getBoard(); // returns a raw pointer
-
-	// ownership of board corresponds to gm
-	// but controller simply 'has-a' board
-};
-
-
-void Controller::setup() {
+void setup(Board *b){
 	requiresDefaultSetup = false;
-
-	if(!graphicView){
-		graphicView = new GraphicsDisplay();
-		board->setgd(graphicView);
+	if(!g){
+	g = new GraphicsDisplay();
+	b->setgd(g);
 	}
-
-	board->clearBoard();
-
+	b->clearBoard();
 	string action;
 	char piece;
 	string colour;
 	string coord;
-
 	while (cin >> action) {
 
 		// placing a piece
@@ -35,15 +25,15 @@ void Controller::setup() {
 			cin >> piece >> coord;
 			if (coord[0] >= 'a' && coord[0] <= 'h' && 
 				coord[1] >= '1' && coord[1] <= '8') {
-				board->place(piece, coord);
-				cout << board->sendToDisplay();
+				b->place(piece, coord);
+				cout << b->sendToDisplay();
 			}
 		}
 
 		// setting whose turn is next
 		else if (action[0] == '=') {
 			cin >> colour;
-			board->setTurn(colour);
+			b->setTurn(colour);
 		}
 
 		// removing a piece
@@ -52,57 +42,47 @@ void Controller::setup() {
 			if (coord[0] >= 'a' && coord[0] <= 'h' &&
 				coord[1] >= '1' && coord[1] <= '8') {
 				// insert remove method
-				board->place('e',coord);
-				cout << board->sendToDisplay();
-			}
+				b->place('e',coord);
+				cout << b->sendToDisplay();
 		}
+	}
 
 		// complete setup mode
-		else if (action == "done" && board->validBoard()) {
+		else if (action == "done" && b->validBoard()) {
 			// check for valid board before exiting
-			board->gameOn();	
+			b->gameOn();	
 			break;
 		}
-
-		else if (action == "done" && !board->validBoard()) {
+		else if (action == "done" && !b->validBoard()) {
 			// check for valid board before exiting
 			cout << "Invalid board. Continue placing pieces." << endl;
 		}
-
 	}
 }
 
-void Controller::game() {
+void game(Board *b){
 	string action;
 	string start;
 	string end;
-
-	if (requiresDefaultSetup) {
-
-		if (!graphicView) {
-			graphicView = new GraphicsDisplay();
-			board->setgd(graphicView);
+	if(requiresDefaultSetup){
+		if(!g){
+		g = new GraphicsDisplay();
+		b->setgd(g);
 		}
-
-		board->normalSetup();
+		b->normalSetup();
 	}
-
-	cout << board->sendToDisplay();
-
-	if (board->isP1computer() && board->isP2computer()){
-		while(!board->isGameOver()){
-			board->makeCompMove();
-			cout << board->sendToDisplay();
+	cout << b->sendToDisplay();
+	if(b->isP1computer() && b->isP2computer()){
+		while(!b->isGameOver()){
+			b->makeCompMove();
+			cout << b->sendToDisplay();
 		}
-
-	} else if (board->isP1computer()) {
-		
-		while(true) {
-			if (board->getTurnStatus()) {
-				board->makeCompMove();
+	} else if(b->isP1computer()){
+		while(true){
+			if(b->getTurnStatus()){
+				b->makeCompMove();
 			} else {
 				cin >> action;
-
 				if (action == "move") {
 					cin >> start >> end;
 					// insert move method
@@ -110,8 +90,8 @@ void Controller::game() {
 						cout << "Invalid move. Try again." << endl;
 						continue;
 					}
-					board->move(start,end);
-					if (board->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+					b->move(start,end);
+					if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
 						cout << "Your pawn has been promoted. Select a piece" << endl;
 						string prom;
 						cin >> prom;
@@ -121,27 +101,23 @@ void Controller::game() {
 								return;
 							}
 						}
-						board->place(prom[0], end);
+						b->place(prom[0], end);
 					}
-					if(board->isGameOver()){
+					if(b->isGameOver()){
 						break;
 					}
-					cout << board->sendToDisplay();
+					cout << b->sendToDisplay();
 				}	
-
 				else if (action == "resign") {
-						board->endGame("black resigns");
+						b->endGame("black resigns");
 						break;
 				}
 			}
 		}
-
-	} else if (board->isP2computer()) {
-
+	} else if(b->isP2computer()){
 		while(true){
-
-			if (!board->getTurnStatus()) {
-				board->makeCompMove();
+			if(!b->getTurnStatus()){
+				b->makeCompMove();
 			} else {
 				cin >> action;
 				if (action == "move") {
@@ -151,8 +127,8 @@ void Controller::game() {
 						cout << "Invalid move. Try again." << endl;
 						continue;
 					}
-					board->move(start,end);
-					if (board->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+					b->move(start,end);
+					if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
 						cout << "Your pawn has been promoted. Select a piece" << endl;
 						string prom;
 						cin >> prom;
@@ -162,16 +138,16 @@ void Controller::game() {
 								return;
 							}
 						}
-						board->place(prom[0], end);
+						b->place(prom[0], end);
 					}
-					cout << board->sendToDisplay();
+					cout << b->sendToDisplay();
 				}	
 				else if (action == "resign") {
-						board->endGame("white resigns");
+						b->endGame("white resigns");
 						break;
 				}
 			}
-			if(board->isGameOver()){
+			if(b->isGameOver()){
 				break;
 			}
 		}
@@ -185,8 +161,8 @@ void Controller::game() {
 					cout << "Invalid move. Try again." << endl;
 					continue;
 				}
-				board->move(start,end);
-				if (board->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+				b->move(start,end);
+				if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
 					cout << "Your pawn has been promoted. Select a piece" << endl;
 					string prom;
 					bool validProm = false;
@@ -194,7 +170,7 @@ void Controller::game() {
 						if(!(cin >> prom)){
 								return;
 						}
-						if (!board->getTurnStatus() && 
+						if (!b->getTurnStatus() && 
 						('R' == prom[0] || prom[0] == 'N' || 'Q' == prom[0] || 'B' == prom[0])) {
 							validProm = true;
 						}
@@ -206,19 +182,19 @@ void Controller::game() {
 							cout << "Invalid promotion" << endl;
 						}
 					}
-					board->place(prom[0], end);
+					b->place(prom[0], end);
 				}
-				if(board->isGameOver()){
+				if(b->isGameOver()){
 					break;
 				}
-				cout << board->sendToDisplay();
+				cout << b->sendToDisplay();
 			}
 			else if (action == "resign") {
 				// insert resign method
-				if(board->getTurnStatus()){
-					board->endGame("white resigns");
+				if(b->getTurnStatus()){
+					b->endGame("white resigns");
 				} else {
-					board->endGame("black resigns");
+					b->endGame("black resigns");
 				}
 				break;
 			}
@@ -226,8 +202,8 @@ void Controller::game() {
 	} 
 }
 
-void Controller::players() {
-	board->gameOn();
+void players(Board *b){
+	b->gameOn();
 	string p1;
 	string p2;
 	int ip1;
@@ -255,7 +231,26 @@ void Controller::players() {
 	}
 
 	if (ip1 != 0 || ip2 != 0) {
-		board->newPlayers(ip1,ip2);	
+		b->newPlayers(ip1,ip2);	
 	}
 }
 
+int main () {
+	Board *b = new Board(0,0);
+	string command;
+
+	while (cin >> cmd) {
+
+		// setup command
+		if (cmd == "setup") {
+			controller.setup(b);
+		}
+
+		// game is now running
+		else if (cmd == "game") {
+			controller.players(b);
+			controller.game(b);
+		}
+	}
+	gm.getBoard()->printScore();
+}
