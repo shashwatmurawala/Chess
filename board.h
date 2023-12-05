@@ -10,10 +10,10 @@
 class Piece;
 class Scoreboard;
 class Board {
-	Piece **board;
 	bool Turn;
 	bool inCheck;
 	bool gameOver;
+	Piece **board;
 	Scoreboard *s;
 	GraphicsDisplay *gd = nullptr;
 	Player *p1;
