@@ -41,11 +41,11 @@ void Scoreboard::win(bool isWhite){
 
 void Scoreboard::resign(bool isWhite){
 	if (!isWhite) {
-		++whiteScore;
+		whiteScore += 1.0;
 		cout << "The Winner is White" << endl;
 	}
 	else {
-		++blackScore;
+		blackScore += 1.0;
 		cout << "The Winner is White" << endl;
 	}
 }

@@ -5,7 +5,7 @@
 using namespace std;
 
 // 2 Parameter ctor
-King::King(int row, int col, bool white): Piece{row, col, white}, firstMove{true} {}
+King::King(int index, bool white): Piece{index, white}, firstMove{true} {}
 
 // Dtor
 King::~King(){}

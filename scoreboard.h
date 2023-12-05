@@ -4,9 +4,6 @@
 #include <string>
 #include "board.h"
 
-class Board;
-class Piece;
-
 class Scoreboard{
 	int whiteScore;
 	int blackScore;
