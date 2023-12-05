@@ -63,11 +63,21 @@ void GraphicsDisplay::defaultDisplay(){
 	}
 }
 
+int GraphicsDisplay::rectcol(int col, int row){
+	if ((col + row) % 2 == 0){
+		return c2;
+	}
+	else{
+		return c1;
+	}
+}
+
 void GraphicsDisplay::set(char piece, const string &original){
 	int col = original[0] - 'a' +1;
 	int row = reverse(original[1] - '1');     
-	int rectFillColour = (((col + row) % 2 == 0) ? c2 : c1);
+	int rectFillColour = rectcol(col,row);
 	string s(1, piece);
+	int pieceColour = (piece >= 'A' && piece <= 'Z')? Xwindow::White : Xwindow::Black;	
 	w->fillRectangle(col * 64, row * 64, 64, 64, rectFillColour);
 	w->drawString(col * 64 + 16, row * 64 + 32, s);
 }
@@ -77,16 +87,26 @@ int GraphicsDisplay::reverse(int row){
 }
 
 void GraphicsDisplay::update(char piece,const string &original, const string &newpos){
+	//gets originaling coordinates for cells. string information for piece, and the Colour of the piece on the board.
 	int ogrow = reverse(original[1] - '1');
 	int ogcol = original[0] - 'a' + 1;
-	int newrow = reverse(newpos[1] - '1');
-	int newcol = newpos[0] - 'a' + 1;
+	int rownewpos = reverse(newpos[1] - '1');
+	int colnewpos = newpos[0] - 'a' + 1;
 	string s(1, piece);
-	int rectFillColouroriginal = (((ogcol + ogrow) % 2 == 0) ? c2 : c1);
-	int rectFillColournewpos = (((newcol + newrow) % 2 == 0) ? c2 : c1);
+	int pieceColour = (piece >= 'A' && piece <= 'Z')? Xwindow::White : Xwindow::Black;
+	int rectFillColouroriginal = rectcol(ogcol,ogrow);
+	int rectFillColournewpos = rectcol(colnewpos,rownewpos);
+	//first fill rectangle of original position
 	w->fillRectangle(ogcol * 64, ogrow * 64, 64, 64, rectFillColouroriginal);
-	w->fillRectangle(newcol * 64, newrow * 64, 64, 64, rectFillColournewpos);
-	w->drawString(newcol * 64 + 16, (newrow)*64 + 32 , s);
+	// void fillRectangle(int x, int y, int width, int height, int colour=Black);
+	//Then fills rectangle of newpos position(this takes out any existing piece string on the space)
+	w->fillRectangle(colnewpos * 64, rownewpos * 64, 64, 64, rectFillColournewpos);
+
+
+	//Then Writes in the string name of the piece. 
+	//        void drawString(int x, int y, std::string msg, int colour = Black);
+
+	w->drawString(colnewpos * 64 + 16, (rownewpos)*64 + 32 , s);
 }
 
 void GraphicsDisplay::updateScore(bool whitewin, bool stalemate){

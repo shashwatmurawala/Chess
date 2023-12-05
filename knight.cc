@@ -12,8 +12,6 @@ bool Knight::isEmpty() const{
 
 // determines if a Knight can move to the desired end coordinates
 bool Knight::canMove(const std::string &start,const std::string &end, Piece ** b) const {
-	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
-	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
 	int begin_x = getPos(start) % 8;
 	int begin_y = getPos(start) / 8;
 	int fin_x = getPos(end) % 8;

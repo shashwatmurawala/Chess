@@ -80,7 +80,6 @@ void Board::normalSetup(){
 	gd->defaultDisplay();
 }
 
-
 // adds Player objects (human or computer) to the Board
 void Board::newPlayers(int player1, int player2){
 	delete p1;
@@ -276,8 +275,6 @@ void Board::move(const string &start, const string &end){
 			endGame("draw");
 			return;
 		}
-	}else{
-		cout << "Invalid move. Please try again" << endl;
 	}
 }
 
@@ -512,7 +509,7 @@ string Board::sendToDisplay() const{
 }
 
 
-/*
+
 ostream& operator<<(ostream& out, Board& b) {
 	char zero = '0';
 	int end = 8;
@@ -535,7 +532,7 @@ ostream& operator<<(ostream& out, Board& b) {
 
 	out << '\n';
 	return out;
-}*/
+}
 
 
 // sets the turn of the Board to colour

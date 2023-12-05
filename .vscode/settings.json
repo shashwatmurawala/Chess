@@ -4,6 +4,7 @@
 		"iostream": "cpp",
 		"new": "cpp",
 		"sstream": "cpp",
+<<<<<<< HEAD
 		"iosfwd": "cpp",
 		"cctype": "cpp",
 		"clocale": "cpp",
@@ -51,5 +52,8 @@
 		"cinttypes": "cpp",
 		"typeinfo": "cpp",
 		"chrono": "cpp"
+=======
+		"iosfwd": "cpp"
+>>>>>>> parent of b87059c (valid move input checked)
 	}
 }

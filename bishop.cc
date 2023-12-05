@@ -20,6 +20,7 @@ bool Bishop::isEmpty() const{
 
 // determines whether a Bishop can move to the end coordinates
 bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b) const {
+<<<<<<< HEAD
 	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
 	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
 	pair<int, int> begin = getPos(start);
@@ -31,6 +32,10 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 	coord1.second = 0;
 	coord2.first = 0;
 	coord2.second = 7;
+=======
+	int begin = getPos(start);
+	int fin = getPos(end);
+>>>>>>> parent of b87059c (valid move input checked)
 
 	// moving down on the right diagonal
 	if (!(begin==coord1) && !(begin == coord2) && 

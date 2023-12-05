@@ -27,7 +27,6 @@ class Piece {
 		virtual bool first() const;
 		virtual char Type() const=0;
 		virtual ~Piece()=0;
-		
 };
 
 pair<int, int> getPos(const std::string &cmd); // converts a coordinate in the form of letter-number

@@ -7,8 +7,6 @@ Rook::Rook(int pos, bool isWhite) : Piece{pos, isWhite}, firstMove{true} {}
 
 // determines if a Rook can move to the desired end coordinate
 bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b) const {
-	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
-	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
 	int begin = getPos(start);
 	int fin = getPos(end);
 

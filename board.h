@@ -69,7 +69,7 @@ class Board {
 		std::string findKing(bool isWhite) const;
 
 
-		//friend std::ostream& operator<<(std::ostream& out, Board& b);
+		friend std::ostream& operator<<(std::ostream& out, Board& b);
 };
 
 
