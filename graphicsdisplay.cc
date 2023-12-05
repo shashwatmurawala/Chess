@@ -4,188 +4,137 @@
 using namespace std;
 
 GraphicsDisplay::GraphicsDisplay(){
-	xw= new Xwindow(windowsize,windowsize);
-	//creates checkboard pattern
-	clearBoard();
-
-	//create coordinates for chess.
-	for(int i = 0; i < 8; ++i){
-		string s = to_string(flipRow(i));
-		xw->drawString(xPadding, (i+1)*cellsize+yPadding+xPadding, s);
-		s = 'a' + i;
-		xw->drawString((i+1)*cellsize+xPadding, 9*cellsize + yPadding + xPadding, s);
-	}
-	stringstream ss1;
-	stringstream ss2;
-	ss1<<blackScore;
-	ss2<<whiteScore;
-	string black = ss1.str();
-	string white = ss2.str();
-	string s = "Black: " + black + "  White: " + white;
-	xw->drawString(0,50,s);
-	updateTurn(true);
+	w= new Xwindow(640,640);
+	blankBoard();
 }
 
 GraphicsDisplay::~GraphicsDisplay(){
-	delete xw;
+	delete w;
 }
 
-void GraphicsDisplay::clearBoard(){
-	//creates the checkerboard pattern, if there's any text in that area, it will be filled with the pattern - as if the board were cleared.
+void GraphicsDisplay::blankBoard(){
 	for (int i = 1; i <= 8; ++i){
-		for (int j = 1; j<= 8; ++j){
+		for (int j = 1; j <= 8; ++j){
 			if((i % 2 == 0 && j % 2 ==  0) || (i % 2 == 1 && j % 2 == 1)){
-				xw->fillRectangle(i*cellsize, j*cellsize, cellsize, cellsize, colourNegative);
+				w->fillRectangle(i * 64, j * 64, 64, 64, c2);
 			}
 			else{
-				xw->fillRectangle(i*cellsize, j*cellsize, cellsize, cellsize, colourPositive);
+				w->fillRectangle(i * 64, j * 64, 64, 64, c1);
 			}
 		}
+		string s = to_string(reverse(i - 1));
+		w->drawString(16, i * 64 + 32 + 16, s);
+		s = 'a' + i - 1;
+		w->drawString(i * 64 + 16, 9 * 64 + 32 + 16, s);
 	}
+	stringstream ss1;
+	stringstream ss2;
+	ss1 << blackScore;
+	ss2 << whiteScore;
+	string score = "Black: " + ss1.str() + "  White: " + ss2.str();
+	w->drawString(10, 40, score);
+	updateTurn(true);
 }
 
 void GraphicsDisplay::defaultDisplay(){
-	string s; 
-	//fill in black pieces at the top
 	for(int i = 1; i <= 8; ++i){
 		if(i == 1 || i == 8){
-			s = "r";
+			w->drawString(i * 64 + 16, 64 + 32, "r");
+			w->drawString(i * 64 + 16, 64 * 8 + 32, "R");
 		}
 		else if(i == 2|| i == 7){
-			s = "n";
+			w->drawString(i * 64 + 16, 64 + 32, "n");
+			w->drawString(i * 64 + 16, 64 * 8 + 32, "N");
 		}
 		else if(i == 3 || i == 6){
-			s = "b";
+			w->drawString(i * 64 + 16, 64 + 32, "b");
+			w->drawString(i * 64 + 16, 64 * 8 + 32, "B");
 		}
 		else if(i == 4){
-			s = "q";
+			w->drawString(i * 64 + 16, 64 + 32, "q");
+			w->drawString(i * 64 + 16, 64 * 8 + 32, "Q");
 		}
 		else{
-			s = "k";
+			w->drawString(i * 64 + 16, 64 + 32, "k");
+			w->drawString(i * 64 + 16, 64 * 8 + 32, "K");
 		}
-		xw->drawString(i*cellsize+xPadding, cellsize+yPadding, s);
-	}
-	// fill in black pawns
-	for(int i =1; i<= 8; ++i){
-		xw->drawString(i*cellsize+xPadding, 2*cellsize + yPadding, "p");
-	}
-	// fill in white pieces
-	for(int i = 1; i <= 8; ++i){
-		if(i == 1 || i == 8){
-			s = "R";
-		}
-		else if(i == 2|| i == 7){
-			s = "N";
-		}
-		else if(i == 3 || i == 6){
-			s = "B";
-		}
-		else if(i == 4){
-			s = "Q";
-		}
-		else{
-			s = "K";
-		}
-		xw->drawString(i*cellsize+xPadding, cellsize*8 +yPadding, s);
-	}
-	// fill in white pawns
-	for(int i =1; i<= 8; ++i){
-		xw->drawString(i*cellsize+xPadding, 7*cellsize + yPadding, "P");
+		w->drawString(i * 64 + 16, 2 * 64 + 32, "p");
+		w->drawString(i * 64 + 16, 7 * 64 + 32, "P");
 	}
 }
 
-
-string pieceToString (char piece){
-	string p(1, piece);
-	return p;
-}
-
-int GraphicsDisplay::findPieceColour(char piece){
+int GraphicsDisplay::piececol(char piece){
 	return (piece >= 'a' && piece <= 'z')? Xwindow::Black : Xwindow::White;
 }
 
-int GraphicsDisplay::findRectangleColour(int col, int row){
-	if ((row % 2 == 0  && col % 2 == 0) || (row % 2 == 1 && col % 2 == 1)){
-		return colourNegative;
+int GraphicsDisplay::rectcol(int col, int row){
+	if ((col + row) % 2 == 0){
+		return c2;
 	}
 	else{
-		return colourPositive;
+		return c1;
 	}
 }
 
-void GraphicsDisplay::setPiece(char piece, const string &start){
-	int col = start[0] - 'a' +1;
-	int row = flipRow(start[1] - '1');     
-	int rectFillColour = findRectangleColour(col,row);
-	string s = pieceToString(piece);
-	int pieceColour = findPieceColour(piece);	
-	xw->fillRectangle(col*cellsize, row*cellsize, cellsize, cellsize, rectFillColour);
-	xw->drawString(col*cellsize + xPadding, row*cellsize + yPadding, s);
+void GraphicsDisplay::set(char piece, const string &original){
+	int col = original[0] - 'a' +1;
+	int row = reverse(original[1] - '1');     
+	int rectFillColour = rectcol(col,row);
+	string s(1, piece);
+	int pieceColour = piececol(piece);	
+	w->fillRectangle(col * 64, row * 64, 64, 64, rectFillColour);
+	w->drawString(col * 64 + 16, row * 64 + 32, s);
 }
 
-int GraphicsDisplay::flipRow(int row){
+int GraphicsDisplay::reverse(int row){
 	return (8 - row);
 }
 
-void GraphicsDisplay::updateMove(char piece,const string &start, const string &end){
-	//gets starting coordinates for cells. string information for piece, and the Colour of the piece on the board.
-	int rowStart = flipRow(start[1] - '1');
-	int colStart = start[0] - 'a' + 1;
-	int rowEnd = flipRow(end[1] - '1');
-	int colEnd = end[0] - 'a' + 1;
-	string s = pieceToString(piece);
-	int pieceColour = findPieceColour(piece);
-	int rectFillColourStart = findRectangleColour(colStart,rowStart);
-	int rectFillColourEnd = findRectangleColour(colEnd,rowEnd);
-	//first fill rectangle of start position
-	xw->fillRectangle(colStart * cellsize, rowStart * cellsize, cellsize, cellsize, rectFillColourStart);
+void GraphicsDisplay::update(char piece,const string &original, const string &newpos){
+	//gets originaling coordinates for cells. string information for piece, and the Colour of the piece on the board.
+	int roworiginal = reverse(original[1] - '1');
+	int coloriginal = original[0] - 'a' + 1;
+	int rownewpos = reverse(newpos[1] - '1');
+	int colnewpos = newpos[0] - 'a' + 1;
+	string s(1, piece);
+	int pieceColour = piececol(piece);
+	int rectFillColouroriginal = rectcol(coloriginal,roworiginal);
+	int rectFillColournewpos = rectcol(colnewpos,rownewpos);
+	//first fill rectangle of original position
+	w->fillRectangle(coloriginal * 64, roworiginal * 64, 64, 64, rectFillColouroriginal);
 	// void fillRectangle(int x, int y, int width, int height, int colour=Black);
-	//Then fills rectangle of end position(this takes out any existing piece string on the space)
-	xw->fillRectangle(colEnd * cellsize, rowEnd * cellsize, cellsize, cellsize, rectFillColourEnd);
+	//Then fills rectangle of newpos position(this takes out any existing piece string on the space)
+	w->fillRectangle(colnewpos * 64, rownewpos * 64, 64, 64, rectFillColournewpos);
 
 
 	//Then Writes in the string name of the piece. 
 	//        void drawString(int x, int y, std::string msg, int colour = Black);
 
-	xw->drawString(colEnd * cellsize + xPadding, (rowEnd)*cellsize + yPadding , s);
+	w->drawString(colnewpos * 64 + 16, (rownewpos)*64 + 32 , s);
 }
 
-void GraphicsDisplay::clearTop(bool forTurn){
-if(forTurn){
-xw->fillRectangle(360,0,265 ,50,Xwindow::White);
-}
-else{
-	xw->fillRectangle(0,0,300,50,Xwindow::White);
-}
-}
-
-void GraphicsDisplay::updateScore(bool isWhiteWinner, bool isStalemate){
-	if(isStalemate){
-		whiteScore += 0.5;
-		blackScore += 0.5;
+void GraphicsDisplay::updateScore(bool whitewin, bool stalemate){
+	if(stalemate){
+		whiteScore += 1;
+		blackScore += 1;
+	}else if(whitewin){
+		whiteScore += 1;
 	}
 	else{
-		if (isWhiteWinner){
-			whiteScore += 1;
-		}
-		else{
-			blackScore += 1;
-		}
+		blackScore += 1;
 	}
-	clearTop(false);
-	stringstream blkStream;
-	stringstream whtStream;
-	blkStream<<fixed<<setprecision(1)<<blackScore;
-	string blkScore = blkStream.str();
-	whtStream<<fixed<<setprecision(1)<<whiteScore;
-	string whtScore = whtStream.str();
-	string s = "B:" + blkScore + "  W:" + whtScore;
-	xw->drawString(0,50,s);
+	w->fillRectangle(0, 0, 300, 50, Xwindow::White);
+	stringstream ss1;
+	stringstream ss2;
+	ss1 << blackScore;
+	ss2 << whiteScore;
+	string score = "Black: " + ss1.str() + "  White: " + ss2.str();
+	w->drawString(10, 40, score);
 }
 
 void GraphicsDisplay::updateTurn(bool white){
-string s = (white)? "Turn: White" : "Turn: Black";
-clearTop(true);
-xw->drawString(375, 50, s);
+	string s = (white)? "White's Move" : "Black's Move";
+	w->fillRectangle(365 , 0, 265 , 50, Xwindow::White);
+	w->drawString(380, 40, s);
 }
 
