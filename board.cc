@@ -3,7 +3,6 @@
 #include <string>
 #include "board.h"
 #include "player.h"
-#include "computer.h"
 #include "scoreboard.h"
 #include "piece.h"
 #include "empty.h"
@@ -24,11 +23,11 @@ Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true}
 			}
 			if (player1 > 0) {
 				delete p1;
-				p1 = new Comp(player1, true);
+				p1 = new Player(true);
 			}
 			if (player2 > 0) {
 				delete p2;
-				p1 = new Comp(player2, false);
+				p1 = new Player(true);
 			}
 		}
 
@@ -77,18 +76,8 @@ void Board::normalSetup(){
 void Board::newPlayers(int player1, int player2){
 	delete p1;
 	delete p2;
-	if (player1 == 0) {
-		p1 = new Player(true);
-	}
-	else if (player1 > 0) {
-		p1 = new Comp(player1, true);
-	}
-	if (player2 == 0) {
-		p2 = new Player(false);
-	}
-	else if (player2 > 0) {
-		p2 = new Comp(player2, false);
-	}
+	p1 = new Player(true);
+	p2 = new Player(false);
 }
 
 void Board::place(char piece, const string &cmd) { 
