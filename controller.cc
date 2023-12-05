@@ -84,13 +84,13 @@ void Controller::game() {
 
 	cout << *board << endl;
 
-	if (board->isP1computer() && board->isP2computer()){
+	if (board->P1computer() && board->P2computer()){
 		while(!board->isGameOver()){
 			board->ComputerMove();
 			cout << *board << endl;
 		}
 
-	} else if (board->isP1computer()) {
+	} else if (board->P1computer()) {
 		
 		while(true) {
 			if (board->getTurnStatus()) {
@@ -105,7 +105,7 @@ void Controller::game() {
 						continue;
 					}
 					board->move(start,end);
-					if (board->canPawnPromote()) {
+					if (board->Promotion()) {
 						cout << "Your pawn has been promoted. Select a piece" << endl;
 						string prom;
 						cin >> prom;
@@ -130,7 +130,7 @@ void Controller::game() {
 			}
 		}
 
-	} else if (board->isP2computer()) {
+	} else if (board->P2computer()) {
 
 		while(true){
 
@@ -146,7 +146,7 @@ void Controller::game() {
 						continue;
 					}
 					board->move(start,end);
-					if (board->canPawnPromote()) {
+					if (board->Promotion()) {
 						cout << "Your pawn has been promoted. Select a piece" << endl;
 						string prom;
 						cin >> prom;
@@ -178,7 +178,7 @@ void Controller::game() {
 					continue;
 				}
 				board->move(start,end);
-				if (board->canPawnPromote()) {
+				if (board->Promotion()) {
 					cout << "Your pawn has been promoted. Select a piece" << endl;
 					string prom;
 					bool validProm = false;

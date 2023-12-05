@@ -2,9 +2,9 @@
 #include "piece.h"
 #include <sstream>
 
-int arrayloc(const std::string &cmd) {
-	int col = cmd[0] - 'a';
-	int row = cmd[1] - '1';
+int arrayloc(const std::string &task) {
+	int col = task[0] - 'a';
+	int row = task[1] - '1';
 	int pos = 8 * (7 - row) + col; 
 	return pos;
 }

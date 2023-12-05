@@ -16,7 +16,7 @@
 
 using namespace std;
 
-Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true},
+Board::Board(int player1, int player2): board{new Piece*[64]}, Turn{true},
 		inCheck{false}, gameOver{true}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
 			for (int i = 0; i < 64; ++i) {
 				board[i] = new Empty(i);
@@ -80,9 +80,9 @@ void Board::newPlayers(int player1, int player2){
 	p2 = new Player(false);
 }
 
-void Board::place(char piece, const string &cmd) { 
+void Board::place(char piece, const string &task) { 
 	char p = piece;
-	int index = arrayloc(cmd);
+	int index = arrayloc(task);
 	bool isWhite = ('A' < piece) && ('Z' > piece);
 	if (!isWhite){
 		piece = piece - 'a' + 'A';
@@ -116,7 +116,7 @@ void Board::place(char piece, const string &cmd) {
 		delete board[index];
 		board[index] = new Empty(index);
 	}
-	gd->set(p,cmd);
+	gd->set(p,task);
 }
 
 Board::~Board() {
@@ -140,7 +140,7 @@ bool Board::testMove(const string &start, const string &end) {
 	if (p->validMove(start, end, getBoard())) {
 		board[arrayloc(end)] = p;
 		board[arrayloc(start)] = new Empty(arrayloc(start));
-		if (isCheck(isTurnWhite)) {
+		if (Check(Turn)) {
 			delete board[arrayloc(start)];
 			board[arrayloc(start)] = p;
 			board[arrayloc(end)] = temp;
@@ -156,7 +156,7 @@ bool Board::testMove(const string &start, const string &end) {
 	}
 }
 
-bool Board::canPawnPromote(){
+bool Board::Promotion(){
 	for (int i = 0; i < 8; ++i) {
 		if ('P' == board[i]->PT()) {
 			return true;
@@ -171,7 +171,7 @@ bool Board::canPawnPromote(){
 }
 
 bool Board::getTurnStatus() const {
-	return isTurnWhite;
+	return Turn;
 }
 
 void Board::move(const string &start, const string &end){
@@ -221,22 +221,22 @@ void Board::move(const string &start, const string &end){
 				gd->update('r',"a8","d8");
 			}
 		}
-		isTurnWhite = (! isTurnWhite);
-		gd->updateTurn(isTurnWhite);
+		Turn = (! Turn);
+		gd->updateTurn(Turn);
 		gd->update(board[arrayloc(end)]->PT(),start,end);
-		inCheck = isCheck(isTurnWhite);
+		inCheck = Check(Turn);
 		p->moved();
 		
-		if (isCheck(true)) {
+		if (Check(true)) {
 			s->check(true);
 		}
-		else if (isCheck(false)) {
+		else if (Check(false)) {
 			s->check(false);
 		}
 
-		if (inCheck && isCheckmate()) {
+		if (inCheck && Checkmate()) {
 			string winner;
-			if (isTurnWhite) {
+			if (Turn) {
 				winner = "black";
 			}
 			else { 
@@ -245,14 +245,14 @@ void Board::move(const string &start, const string &end){
 			endGame(winner);
 			return; 
 		}
-		else if (isStalemate()) {
+		else if (Statemate()) {
 			endGame("draw");
 			return;
 		}
 	}
 }
 
-bool Board::isCheck(bool isWhite) {
+bool Board::Check(bool isWhite) {
 	string king = findKing(isWhite);
 	bool flag = false;
 	for(int i = 0; i < 64; ++i){
@@ -263,25 +263,25 @@ bool Board::isCheck(bool isWhite) {
 	return flag;
 }
 
-void Board::endGame(string cmd) {
+void Board::endGame(string task) {
 	gameOver = true;
-	if (cmd == "black") {
+	if (task == "black") {
 		s->win(false);
 		gd->updateScore(false,false);
 	}
-	else if (cmd == "white") {
+	else if (task == "white") {
 		s->win(true);
 		gd->updateScore(true,false);
 	}
-	else if (cmd == "white resigns") {
+	else if (task == "white resigns") {
 		s->resign(true);
 		gd->updateScore(false,false);
 	}
-	else if (cmd == "black resigns") {
+	else if (task == "black resigns") {
 		s->resign(false);
 		gd->updateScore(true,false);
 	}
-	else if (cmd == "draw") {
+	else if (task == "draw") {
 		s->tie();
 		gd->updateScore(false,true);
 	}
@@ -333,10 +333,10 @@ bool Board::validBoard() {
 	if (numBlackKings != 1 || numWhiteKings != 1) {
 		return false;
 	}
-	else if (isCheckmate()) {
+	else if (Checkmate()) {
 		return false;
 	}
-	else if (isStalemate()) {
+	else if (Statemate()) {
 		return false;
 	}
 	else {
@@ -344,18 +344,18 @@ bool Board::validBoard() {
 	}
 }
 
-bool Board::isCheckmate() {
-	int king = arrayloc(findKing(isTurnWhite));
-	if (isTurnWhite) {
+bool Board::Checkmate() {
+	int king = arrayloc(findKing(Turn));
+	if (Turn) {
 		for (int i = 0; i < 64; ++i) {
 			char type = board[i]->PT();
-			if (isTurnWhite == board[i]->isWhite() && 'P' == type &&
+			if (Turn == board[i]->isWhite() && 'P' == type &&
 				(testMove(BoardCoord(i), BoardCoord(i-1)) || testMove(BoardCoord(i), BoardCoord(i+1)) || 
 					testMove(BoardCoord(i), BoardCoord(i-9)) || testMove(BoardCoord(i), BoardCoord(i-8)) || 
 					testMove(BoardCoord(i), BoardCoord(i-7)))) {
 				return false;
 			}
-			else if (isTurnWhite == board[i]->isWhite()) {
+			else if (Turn == board[i]->isWhite()) {
 				for (int j = 0; j < 64; ++j) {
 					if (j == i) {
 						continue;
@@ -373,13 +373,13 @@ bool Board::isCheckmate() {
 	else {
 		for(int i = 0; i < 64; ++i) {
 			char type = board[i]->PT();
-			if (isTurnWhite == board[i]->isWhite() && 'p' == type &&
+			if (Turn == board[i]->isWhite() && 'p' == type &&
 				(testMove(BoardCoord(i), BoardCoord(i-1)) || testMove(BoardCoord(i), BoardCoord(i+1)) || 
 					testMove(BoardCoord(i), BoardCoord(i-9)) || testMove(BoardCoord(i), BoardCoord(i-8)) || 
 					testMove(BoardCoord(i), BoardCoord(i-7)))) {
 				return false;
 			}
-			else if (isTurnWhite == board[i]->isWhite()) {
+			else if (Turn == board[i]->isWhite()) {
 				for (int j = 0; j < 64; ++j) {
 					if (j == i) {
 						continue;
@@ -397,17 +397,17 @@ bool Board::isCheckmate() {
 	return true;
 }
 
-bool Board::isStalemate(){
-	if (isTurnWhite) {
+bool Board::Statemate(){
+	if (Turn) {
 		for(int i = 0; i < 64; ++i) {
 			char type = board[i]->PT();
-			if (isTurnWhite == board[i]->isWhite() && 'P' == type &&
+			if (Turn == board[i]->isWhite() && 'P' == type &&
 				(testMove(BoardCoord(i), BoardCoord(i-1)) || testMove(BoardCoord(i), BoardCoord(i+1)) || 
 					testMove(BoardCoord(i), BoardCoord(i-9)) || testMove(BoardCoord(i), BoardCoord(i-8)) || 
 					testMove(BoardCoord(i), BoardCoord(i-7)))) {
 				return false;
 			}
-			else if (isTurnWhite == board[i]->isWhite()) {
+			else if (Turn == board[i]->isWhite()) {
 				for (int j = 0; j < 64; ++j) {
 					if (j == i) {
 						continue;
@@ -425,13 +425,13 @@ bool Board::isStalemate(){
 	else {
 		for (int i = 0; i < 64; ++i) {
 			char type = board[i]->PT();
-			if (isTurnWhite == board[i]->isWhite() && 'p' == type &&
+			if (Turn == board[i]->isWhite() && 'p' == type &&
 				(testMove(BoardCoord(i), BoardCoord(i-1)) || testMove(BoardCoord(i), BoardCoord(i+1)) || 
 					testMove(BoardCoord(i), BoardCoord(i-9)) || testMove(BoardCoord(i), BoardCoord(i-8)) || 
 					testMove(BoardCoord(i), BoardCoord(i-7)))) {
 				return false;
 			}
-			else if (isTurnWhite == board[i]->isWhite()) {
+			else if (Turn == board[i]->isWhite()) {
 				for (int j = 0; j < 64; ++j) {
 					if (j == i) {
 						continue;
@@ -476,12 +476,12 @@ ostream& operator<<(ostream& out, Board& b) {
 
 void Board::setTurn(string colour) {
 	if ("black" == colour || "BLACK" == colour) {
-		isTurnWhite = false;
+		Turn = false;
 	}
 	else if ("white" == colour || "WHITE" == colour) {
-		isTurnWhite = true;
+		Turn = true;
 	}
-	gd->updateTurn(isTurnWhite);
+	gd->updateTurn(Turn);
 }
 
 string Board::findKing(bool isWhite) const {
@@ -506,8 +506,8 @@ Piece ** Board::getBoard(){
 	return tmp;
 }
 
-Piece *Board::getPiece(const string &cmd) {
-	int index = arrayloc(cmd);
+Piece *Board::getPiece(const string &task) {
+	int index = arrayloc(task);
 	return board[index];
 }
 
@@ -515,18 +515,18 @@ void Board::setgd(GraphicsDisplay *g) {
 	this->gd = g;
 }
 
-bool Board::isP1computer(){
+bool Board::P1computer(){
 	return p1->isComputer();
 }
 
-bool Board::isP2computer() {
+bool Board::P2computer() {
 	return p2->isComputer();
 }
 
 void Board::ComputerMove(){
 	string start;
 	string last;
-	if (isTurnWhite) {
+	if (Turn) {
 		p1->generateMove(this,start,last);
 	}
 	else {

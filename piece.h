@@ -4,7 +4,7 @@
 
 class Board;
 
-int arrayloc(const std::string &cmd); 
+int arrayloc(const std::string &task); 
 std::string BoardCoord(int arrayloc); 
 class Piece {
 	int pos;
