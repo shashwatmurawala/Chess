@@ -1,12 +1,11 @@
+#include <sstream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
 #include "computer.h"
-#include <string>
 #include "player.h"
 #include "piece.h"
 #include "board.h"
-#include <cstdlib>
-#include <ctime>
-#include <sstream>
-#include <vector>
 
 static std::string convert(int index){
 	std::string s;
@@ -20,8 +19,6 @@ static std::string convert(int index){
 }
 
 Comp::Comp(int level, bool white): Player{white}, level{level} {}
-
-
 
 void Comp::generateMove(Board *b, std::string &first, std::string &last){
 	if(1 == level){
@@ -51,7 +48,7 @@ void Comp::genMove1(Board *b, std::string &first, std::string &last){
 	if(isPlayerWhite()){
 		while(true){	
 			for(int j=63; j>-1; --j){
-				if(b->testMove(convert(p->posn()),convert(j))){
+				if(b->testMove(convert(p->squarelocation()),convert(j))){
 					end = j;
 					break; 
 				}
@@ -65,7 +62,7 @@ void Comp::genMove1(Board *b, std::string &first, std::string &last){
 	} else {
 		while(true){	
 			for(int k=0; k<64; ++k){
-				if(b->testMove(convert(p->posn()),convert(k))){
+				if(b->testMove(convert(p->squarelocation()),convert(k))){
 					end = k;
 					break; 
 				}
@@ -77,7 +74,7 @@ void Comp::genMove1(Board *b, std::string &first, std::string &last){
 			p = myTeam[start];
 		}
 	}
-	first = convert(p->posn());
+	first = convert(p->squarelocation());
 	last = convert(end);
 	return;
 }

@@ -22,12 +22,14 @@ void Pawn::moved() {
 }
 
 // determines whether a Pawn can move to the desired end coordinates
-bool Pawn::canMove(const std::string &start,const std::string &end, Piece ** b) const {
+bool Pawn::validMove(const std::string &start,const std::string &end, Piece ** b) const {
+	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
+	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
 	int begin = getPos(start);
 	int fin = getPos(end);
 
 	// is the Pawn trying to move to the spot it is currently in
-	if (posn() != begin) {
+	if (squarelocation() != begin) {
 		return false;
 	}
 
@@ -35,61 +37,61 @@ bool Pawn::canMove(const std::string &start,const std::string &end, Piece ** b) 
 	if (isWhite()) {
 
 		// pawn is in column A
-		if (onLeftEdge()) {
+		if (ColA()) {
 
 			// move forward one space if the piece is white and end is empty 
-			if ((posn() - 8) == fin && b[fin]->isEmpty()) {
+			if ((squarelocation() - 8) == fin && b[fin]->isEmpty()) {
 				return true;
 			}
 
 			// move forward 2 spaces if piece is white, path is clear, and pawn hasn't been moved yet
-			else if ((posn() - 16) == fin && b[fin+8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
+			else if ((squarelocation() - 16) == fin && b[fin+8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
 				return true;
 			}
 
 			// move diagonally if the piece is white and capturing another piece
-			else if ((posn() - 7) == fin && !(b[fin]->isEmpty())) {
+			else if ((squarelocation() - 7) == fin && !(b[fin]->isEmpty())) {
 				return true;
 			}
 		}
 
 		// pawn is in column H
-		else if (onRightEdge()) {
+		else if (ColH()) {
 
 			// move forward one space if the piece is white and end is empty
-			if ((posn() - 8) == fin && b[fin]->isEmpty()) {
+			if ((squarelocation() - 8) == fin && b[fin]->isEmpty()) {
 				return true;
 			}
 
 			// move forward two spaces if the piece is white, the path is clear and the pawn has not moved yet
-			else if ((posn() - 16) == fin && b[fin+8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
+			else if ((squarelocation() - 16) == fin && b[fin+8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
 				return true;
 			}
 
 			// move diagonally if the piece is white and capturing another piece
-			else if ((posn() - 9) == fin && !(b[fin]->isEmpty())) {
+			else if ((squarelocation() - 9) == fin && !(b[fin]->isEmpty())) {
 				return true;
 			}
 		}
 
 		// if the pawn is in column B - G
-		else if ((posn() - 8) == fin && b[fin]->isEmpty()) {
+		else if ((squarelocation() - 8) == fin && b[fin]->isEmpty()) {
 				// move forward one space if the piece is white and end is empty
 				return true;
 		}
 
 		// move forward two spaces if the piece is white, the path is clear and the pawn has not moved yet
-		else if ((posn() - 16) == fin && b[fin+8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
+		else if ((squarelocation() - 16) == fin && b[fin+8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
 				return true;
 		}
 
 		// move diagonally if the piece is white and capturing another piece
-		else if ((posn() - 9) == fin && !(b[fin]->isEmpty())) {
+		else if ((squarelocation() - 9) == fin && !(b[fin]->isEmpty())) {
 				return true;
 		}
 
 		// move diagonally if the piece is white and capturing another piece
-		else if((posn() - 7) == fin && !(b[fin]->isEmpty())) {
+		else if((squarelocation() - 7) == fin && !(b[fin]->isEmpty())) {
 				return true;
 		}
 	}
@@ -98,61 +100,61 @@ bool Pawn::canMove(const std::string &start,const std::string &end, Piece ** b) 
 	else {
 
 		// pawn is in column A
-		if (onLeftEdge()) {
+		if (ColA()) {
 
 			// move forward one space if the piece is black and end is empty
-			if ((posn() + 8) == fin && b[fin]->isEmpty()) {
+			if ((squarelocation() + 8) == fin && b[fin]->isEmpty()) {
 				return true;
 			}
 
 			// move forward two spaces if the piece is black, the path is clear and the pawn has not moved yet
-			else if ((posn() + 16) == fin && b[fin-8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
+			else if ((squarelocation() + 16) == fin && b[fin-8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
 				return true;
 			}
 
 			// move diagonally if the piece is black and capturing another piece
-			else if ((posn() + 9) == fin && !(b[fin]->isEmpty())) {
+			else if ((squarelocation() + 9) == fin && !(b[fin]->isEmpty())) {
 				return true;
 			}
 		}
 
 		// pawn is in column H
-		else if (onRightEdge()) {
+		else if (ColH()) {
 
 			// move forward one space if the piece is black and end is empty
-			if ((posn() + 8) == fin && b[fin]->isEmpty()) {
+			if ((squarelocation() + 8) == fin && b[fin]->isEmpty()) {
 				return true;
 			}
 
 			// move forward two spaces if the piece is black, the path is clear and the pawn has not moved yet
-			else if ((posn() + 16) == fin && b[fin-8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
+			else if ((squarelocation() + 16) == fin && b[fin-8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
 				return true;
 			}
 
 			// move diagonally if the piece is black and capturing another piece
-			else if ((posn() + 7) == fin && !(b[fin]->isEmpty())) {
+			else if ((squarelocation() + 7) == fin && !(b[fin]->isEmpty())) {
 				return true;
 			}
 		}
 
 		// if the pawn is in column B - G
-		else if ((posn() + 8) == fin && b[fin]->isEmpty()) {
+		else if ((squarelocation() + 8) == fin && b[fin]->isEmpty()) {
 				// move forward one space if the piece is black and end is empty
 				return true;
 		}
 
 		// move forward two spaces if the piece is black, the path is clear and the pawn has not moved yet
-		else if ((posn() + 16) == fin && b[fin-8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
+		else if ((squarelocation() + 16) == fin && b[fin-8]->isEmpty() && b[fin]->isEmpty() && firstMove) {
 				return true;
 		}
 
 		// move diagonally if the piece is black and capturing another piece
-		else if ((posn() + 9) == fin && !(b[fin]->isEmpty())) {
+		else if ((squarelocation() + 9) == fin && !(b[fin]->isEmpty())) {
 				return true;
 		}
 
 		// move diagonally if the piece is black and capturing another piece
-		else if ((posn() + 7) == fin && !(b[fin]->isEmpty())) {
+		else if ((squarelocation() + 7) == fin && !(b[fin]->isEmpty())) {
 				return true;
 		}
 	}

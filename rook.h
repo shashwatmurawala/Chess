@@ -12,7 +12,7 @@ public:
 	bool isEmpty() const override;
 	void moved() override;
 	bool first() const override;
-	bool canMove(const std::string &start, const std::string &end, Piece ** b) const override;
+	bool validMove(const std::string &start, const std::string &end, Piece ** b) const override;
 };
 
 #endif

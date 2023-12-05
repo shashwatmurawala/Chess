@@ -4,15 +4,15 @@
 #include <string>
 
 class Scoreboard{
-	float whiteScore;
-	float blackScore;
+	int whiteScore;
+	int blackScore;
 public:
 	Scoreboard();
-	void check(bool IsWhiteInCheck); // sends 
+	void check(bool IsWhiteInCheck);
 	void tie(); 
 	void win(bool isWhite);
 	void resign(bool isWhite);
-	void printScore();
+	void Score();
 };
 
 #endif

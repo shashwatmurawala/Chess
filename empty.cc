@@ -21,7 +21,7 @@ Empty::Empty(int index): Piece{index, true}{}
 Empty::~Empty(){};
 
 // determines if the Empty piece can move, but this is illogical so it returns false right away
-bool Empty::canMove(const std::string &start, const std::string &end, Piece ** b) const {
+bool Empty::validMove(const std::string &start, const std::string &end, Piece ** b) const {
 	return false;
 }
 
@@ -32,6 +32,6 @@ bool Empty::isEmpty() const {
 
 // returns the character representing the Black player's empty or the White player's empty.
 char Empty::Type() const {
-	return isWhiteSquare(posn()) ? ' ' : '_' ;
+	return isWhiteSquare(squarelocation()) ? ' ' : '_' ;
 }
 

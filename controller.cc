@@ -6,11 +6,7 @@ using namespace std;
 
 
 Controller::Controller(GameManager& gm): gm {gm}, graphicView {nullptr} {
-	board = gm.getBoard(); // returns a raw pointer
-
-	// ownership of board corresponds to gm
-	// but controller simply 'has-a' board
-
+	board = gm.getBoard();
 
 	cout << "Playing Chess with CS 246!" << endl;
 	showCommands();
@@ -47,8 +43,7 @@ void Controller::setup() {
 			if (coord[0] >= 'a' && coord[0] <= 'h' && 
 				coord[1] >= '1' && coord[1] <= '8') {
 				board->place(piece, coord);
-				// cout << board->sendToDisplay();
-				cout << board << endl;
+				cout << *board << endl;
 			}
 		}
 
@@ -65,7 +60,7 @@ void Controller::setup() {
 				coord[1] >= '1' && coord[1] <= '8') {
 				// insert remove method
 				board->place('e',coord);
-				cout << board->sendToDisplay();
+				cout << *board << endl;
 			}
 		}
 
@@ -99,12 +94,12 @@ void Controller::game() {
 		board->normalSetup();
 	}
 
-	cout << board->sendToDisplay();
+	cout << *board << endl;
 
 	if (board->isP1computer() && board->isP2computer()){
 		while(!board->isGameOver()){
 			board->makeCompMove();
-			cout << board->sendToDisplay();
+			cout << *board << endl;
 		}
 
 	} else if (board->isP1computer()) {
@@ -138,7 +133,7 @@ void Controller::game() {
 					if(board->isGameOver()){
 						break;
 					}
-					cout << board->sendToDisplay();
+					cout << *board << endl;
 				}	
 
 				else if (action == "resign") {
@@ -176,7 +171,7 @@ void Controller::game() {
 						}
 						board->place(prom[0], end);
 					}
-					cout << board->sendToDisplay();
+					cout << *board << endl;
 				}	
 				else if (action == "resign") {
 						board->endGame("white resigns");
@@ -223,7 +218,7 @@ void Controller::game() {
 				if(board->isGameOver()){
 					break;
 				}
-				cout << board->sendToDisplay();
+				cout << *board << endl;
 			}
 			else if (action == "resign") {
 				// insert resign method

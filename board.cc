@@ -164,7 +164,7 @@ bool Board::testMove(const string &start, const string &end) {
 	}
 
 	// temporarily move
-	if (p->canMove(start, end, getBoard())) {
+	if (p->validMove(start, end, getBoard())) {
 		board[getPos(end)] = p;
 		board[getPos(start)] = new Empty(getPos(start));
 		if (isCheck(isTurnWhite)) {
@@ -290,7 +290,7 @@ bool Board::isCheck(bool isWhite) {
 	bool flag = false; // flag will change to true if an opposing piece can move
 	// to the space of the King 
 	for(int i = 0; i < 64; ++i){
-		if (board[i]->canMove(getCor(i),king, getBoard())) {
+		if (board[i]->validMove(getCor(i),king, getBoard())) {
 			flag = true;
 		}
 	}
@@ -489,8 +489,7 @@ bool Board::isStalemate(){
 	return true;
 }
 
-// sends the Board to be displayed as text
-string Board::sendToDisplay() const{
+ostream& operator<<(ostream& out, Board& b) {
 	ostringstream oss;
 	char zero = '0';
 	int j = 0;
@@ -499,7 +498,7 @@ string Board::sendToDisplay() const{
 		char temp = zero + i;
 		oss << temp << " "; 
 		for (; j < end; ++j) {
-			oss << (board[j]->Type());
+			oss << (b.board[j]->Type());
 		}
 		end += 8;
 		oss << "\n";
@@ -511,32 +510,7 @@ string Board::sendToDisplay() const{
 	}
 	oss << '\n';
 	oss << endl;
-	return oss.str();
-}
-
-
-
-ostream& operator<<(ostream& out, Board& b) {
-	char zero = '0';
-	int end = 8;
-
-	for(int i = 8; i > 0; --i) {
-		char temp = zero + i;
-		out << temp << " "; 
-		for (int j = 0; j < end; ++j) {
-			out << (b.board[j]->Type());
-		}
-		end += 8;
-		out << endl;
-	}
-
-	out << "\n  ";
-	for (int k = 0; k < 8; ++k) {
-		char temp = 'a' + k;
-		out << temp;
-	}
-
-	out << '\n';
+	out << oss.str();
 	return out;
 }
 
@@ -568,7 +542,7 @@ string Board::findKing(bool isWhite) const {
 
 // calls the printScore method on the Scoreboard
 void Board::printScore() const {
-	s->printScore();
+	s->Score();
 }
 
 // accessor/getter: gets the Board

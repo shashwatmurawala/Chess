@@ -58,7 +58,6 @@ class Board {
 		bool isGameOver(); 
 		void gameOn(); // sets gameOver flag to false
 		void setgd(GraphicsDisplay *g);
-		std::string sendToDisplay() const;
 
 	// 
 		bool isP1computer(); // checks if P1 is a computer

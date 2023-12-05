@@ -16,7 +16,9 @@ void King::moved(){
 }
 
 // returns whether the King can move to the desired end coordinates
-bool King::canMove(const string &start, const string &end, Piece ** b) const {
+bool King::validMove(const string &start, const string &end, Piece ** b) const {
+	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
+	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
 	int begin = getPos(start);
 	int fin = getPos(end);
 
@@ -88,7 +90,7 @@ bool King::canMove(const string &start, const string &end, Piece ** b) const {
 	}
 
 	// King is on the bottom edge, B1-G1
-	else if (onBottomEdge()) {
+	else if (Row1()) {
 		return (fin == (begin-8) || fin == (begin-1) || 
 				fin == (begin+1) || fin == (begin-7) ||
 				fin == (begin-9)) 
@@ -96,13 +98,13 @@ bool King::canMove(const string &start, const string &end, Piece ** b) const {
 	}
 
 	// King is on the top edge, B8-G8
-	else if (onTopEdge()) {
+	else if (Row8()) {
 		return (fin == (begin+8) || fin == (begin-1) || 
 				fin == (begin+1) || fin == (begin+7) ||
 				fin == (begin+9))
 				? true : false;
 	}
-	else if (onRightEdge()) { // King is on H2-H7
+	else if (ColH()) { // King is on H2-H7
 		return (fin == (begin-1) || fin == (begin-8) || 
 				fin == (begin+8) || fin == (begin+7) ||
 				fin == (begin-9))
@@ -110,7 +112,7 @@ bool King::canMove(const string &start, const string &end, Piece ** b) const {
 	}
 
 	// King is on the left edge, A2-A7
-	else if (onLeftEdge()) {
+	else if (ColA()) {
 		return (fin == (begin-1) || fin == (begin-8) || 
 				fin == (begin+8) || fin == (begin+7) ||
 				fin == (begin-9))
