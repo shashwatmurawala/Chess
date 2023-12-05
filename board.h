@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 #include "scoreboard.h"
 #include "player.h"
 #include "graphicsdisplay.h"
@@ -12,7 +13,7 @@ class Piece;
 
 // Board objects 
 class Board {
-	Piece **board; // an array of 64 Piece pointers
+	std::vector<std::vector<Piece>> board; // an array of 64 Piece pointers
 	bool isTurnWhite;
 	bool inCheck;
 	bool gameOver;

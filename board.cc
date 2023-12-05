@@ -18,11 +18,9 @@
 using namespace std;
 
 // 2 Parameter ctor
-Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true},
+Board::Board(int player1, int player2): isTurnWhite{true},
 		inCheck{false}, gameOver{true}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
-			for (int i = 0; i < 64; ++i) {
-				board[i] = new Empty(i);
-			}
+			clearBoard();
 			if (player1 > 0) {
 				delete p1;
 				p1 = new Comp(player1, true);
@@ -35,9 +33,13 @@ Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true}
 
 // clears the Board and makes all spaces the Empty piece.
 void Board::clearBoard(){
-	for (int i = 0; i < 64; ++i) {
-		delete board[i];
-		board[i] = new Empty(i);
+	for (int i = 0; i < 8; ++i) {
+		vector<Piece> row;
+		for (int j = 0; j < 8; ++j){
+			Empty cur{i};
+			row.emplace_back(cur);
+		}
+		board.emplace_back(row);
 	}
 }
 
@@ -45,37 +47,36 @@ void Board::clearBoard(){
 void Board::normalSetup(){
 	setTurn("white");
 	gameOn();
-	for (int i = 0; i < 64; ++i) {
-		delete board[i];
-	}
 	gd->blankBoard();
 	// setting up a new black team
-	board[0] = new Rook(0,false); // back row
-	board[1] = new Knight(1,false);
-	board[2] = new Bishop(2,false);
-	board[3] = new Queen(3,false);
-	board[4] = new King(4,false);
-	board[5] = new Bishop(5,false);
-	board[6] = new Knight(6,false);
-	board[7] = new Rook(7, false);
-	for (int i = 8; i < 16; ++i) {
-		board[i] = new Pawn(i,false); // row of pawns
+	board[7][0] = Rook(0, false);
+	board[7][1] = Knight(1,false);
+	board[7][2] = Bishop(2,false);
+	board[7][3] = Queen(3,false);
+	board[7][4] = King(4,false);
+	board[7][5] = Bishop(5,false);
+	board[7][6] = Knight(6,false);
+	board[7][7] = Rook(7, false);
+	for (int i = 0; i < 8; ++i) {
+		board[6][i] = Pawn(i,false); // row of pawns
 	}
-	for (int j = 16; j < 48; ++j) {
-		board[j] = new Empty(j); // empty space
+	for (int j = 2; j < 6; ++j) {
+		for (int i = 0; i < 8; ++i) {
+			board[j][i] = Empty(j); // row of pawns
+		}
 	}
 	// setting up a new white team
-	for (int k = 48; k < 56; ++k) {
-		board[k] = new Pawn(k,true); // row of pawns
+	for (int i = 0; i < 8; ++i) {
+		board[1][i] = Pawn(i,true); // row of pawns
 	}
-	board[56] = new Rook(56,true); // back row
-	board[57] = new Knight(57,true);
-	board[58] = new Bishop(58,true);
-	board[59] = new Queen(59,true);
-	board[60] = new King(60,true);
-	board[61] = new Bishop(61,true);
-	board[62] = new Knight(62,true);
-	board[63] = new Rook(63,true);
+	board[0][0] = Rook(56,true); // back row
+	board[0][1] = Knight(57,true);
+	board[0][2] = Bishop(58,true);
+	board[0][3] = Queen(59,true);
+	board[0][4] = King(60,true);
+	board[0][5] = Bishop(61,true);
+	board[0][6] = Knight(62,true);
+	board[0][7] = Rook(63,true);
 	gd->defaultDisplay();
 }
 
@@ -102,7 +103,7 @@ void Board::newPlayers(int player1, int player2){
 void Board::place(char piece, const string &cmd) { 
 	// calling this function with piece == 'E' or 'e' will leave that space empty
 	char p = piece;
-	int index = getPos(cmd);
+	pair<int, int> index = getPos(cmd);
 	bool isWhite = ('A' < piece) && ('Z' > piece);
 	if (!isWhite){
 		piece = piece - 'a' + 'A';
@@ -110,32 +111,25 @@ void Board::place(char piece, const string &cmd) {
 
 	// cases for letters representing the different Pieces
 	if (piece == 'P') {
-		delete board[index];
-		board[index] = new Pawn(index, isWhite);
+		board[index.first][index.second] = Pawn(index, isWhite);
 	}
 	else if (piece == 'R') {
-		delete board[index];
-		board[index] = new Rook(index,isWhite);
+		board[index.first][index.second] = Rook(index,isWhite);
 	}
 	else if (piece == 'Q') {
-		delete board[index];
-		board[index] = new Queen(index,isWhite);
+		board[index.first][index.second] = Queen(index,isWhite);
 	}
 	else if (piece == 'B') {
-		delete board[index];
-		board[index] = new Bishop(index,isWhite);
+		board[index.first][index.second] = Bishop(index,isWhite);
 	}
 	else if (piece == 'N') {
-		delete board[index];
-		board[index] = new Knight(index,isWhite);
+		board[index.first][index.second] = Knight(index,isWhite);
 	}
 	else if (piece == 'K') {
-		delete board[index];
-		board[index] = new King(index,isWhite);
+		board[index.first][index.second] = King(index,isWhite);
 	}
 	else if (piece == 'E') {
-		delete board[index];
-		board[index] = new Empty(index);
+		board[index.first][index.second] = Empty(index);
 	}
 	gd->set(p,cmd);
 }

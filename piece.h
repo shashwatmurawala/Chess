@@ -1,21 +1,24 @@
 #ifndef ___PIECE___
 #define ___PIECE___
 #include <string>
+#include <utility>
+
+using namespace std;
 
 class Board;
 
 
 class Piece {
-	int pos;
+	pair<int, int> pos;
 	bool white;
 
 	public:
-		Piece(int pos, bool white);
+		Piece(int row, int col, bool white);
 		virtual bool canMove(const std::string &start, const std::string &end, Piece ** b) const=0;  
 		bool isWhite() const;
 		virtual bool isEmpty() const=0;
-		int posn() const;
-		void changePos(int posn);
+		pair<int, int> posn() const;
+		void changePos(pair<int, int> posn);
 		bool onRightEdge() const;
 		bool onLeftEdge() const;
 		bool onTopEdge() const;
@@ -27,10 +30,10 @@ class Piece {
 		
 };
 
-int getPos(const std::string &cmd); // converts a coordinate in the form of letter-number
+pair<int, int> getPos(const std::string &cmd); // converts a coordinate in the form of letter-number
 // into the corresponding index in Board
 
-std::string getCor(int index); // converts an index from Board into the 
+std::string getCor(pair<int, int> index); // converts an index from Board into the 
 // corresponding coordinate in the form letter-number
 
 #endif 
