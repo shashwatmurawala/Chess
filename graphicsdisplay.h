@@ -14,7 +14,6 @@ class GraphicsDisplay{
 		GraphicsDisplay();
 		~GraphicsDisplay();
 		int rectcol(int col, int row);
-		int piececol(char piece);
 		void set(char piece, const std::string &original);
 		void update(char piece,const std::string &original,const std::string &newpos);
 		void blankBoard();
