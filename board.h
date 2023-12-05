@@ -2,6 +2,7 @@
 #define ___BOARD___
 
 #include <string>
+#include <iostream>
 #include "scoreboard.h"
 #include "player.h"
 #include "graphicsdisplay.h"
@@ -65,6 +66,9 @@ class Board {
 		void makeCompMove();
 
 		std::string findKing(bool isWhite) const;
+
+
+		friend std::ostream& operator<<(std::ostream& out, Board& b);
 };
 
 

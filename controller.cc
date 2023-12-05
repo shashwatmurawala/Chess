@@ -10,8 +10,19 @@ Controller::Controller(GameManager& gm): gm {gm}, graphicView {nullptr} {
 
 	// ownership of board corresponds to gm
 	// but controller simply 'has-a' board
+
+
+	cout << "Playing Chess with CS 246!" << endl;
+	showCommands();
 };
 
+void Controller::showCommands() const {
+	cout << " === Command ===	=== Description ===" << endl;
+	cout << " 	- setup 		Enters setup mode" << endl;
+	cout << "	- done			Leaves setup mode (if in a valid board state)" << endl;
+	cout << "	- game <white> <black>  Creates a new game with the given players." << endl;
+	cout << "				(each of the players may be 'human' or 'computer[x]'" << endl;
+}
 
 void Controller::setup() {
 	requiresDefaultSetup = false;
@@ -36,7 +47,8 @@ void Controller::setup() {
 			if (coord[0] >= 'a' && coord[0] <= 'h' && 
 				coord[1] >= '1' && coord[1] <= '8') {
 				board->place(piece, coord);
-				cout << board->sendToDisplay();
+				// cout << board->sendToDisplay();
+				cout << board << endl;
 			}
 		}
 

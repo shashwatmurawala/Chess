@@ -514,6 +514,33 @@ string Board::sendToDisplay() const{
 	return oss.str();
 }
 
+
+
+ostream& operator<<(ostream& out, Board& b) {
+	char zero = '0';
+	int end = 8;
+
+	for(int i = 8; i > 0; --i) {
+		char temp = zero + i;
+		out << temp << " "; 
+		for (int j = 0; j < end; ++j) {
+			out << (b.board[j]->Type());
+		}
+		end += 8;
+		out << endl;
+	}
+
+	out << "\n  ";
+	for (int k = 0; k < 8; ++k) {
+		char temp = 'a' + k;
+		out << temp;
+	}
+
+	out << '\n';
+	return out;
+}
+
+
 // sets the turn of the Board to colour
 void Board::setTurn(string colour) {
 	if ("black" == colour || "BLACK" == colour) {

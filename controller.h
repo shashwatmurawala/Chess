@@ -16,6 +16,7 @@ class Controller {
 		void setup();
 		void game();
 		void players();
+		void showCommands() const;
 
 };
 
