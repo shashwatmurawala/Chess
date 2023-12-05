@@ -3,12 +3,8 @@
 #include <string>
 
 // returns if the current position is the white player's square
-static int isWhiteSquare(int pos){
-	pos = pos % 16;
-	if (pos < 8 && (pos % 2) == 0) {
-		return true;
-	}
-	else if (pos > 7 && (pos % 2) == 1) {
+static int isWhiteSquare(pair<int, int> pos){
+	if (((pos.first + pos.second) % 2) == 0) {
 		return true;
 	}
 	return false;
