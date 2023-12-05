@@ -1,42 +1,44 @@
-#include "graphicsdisplay.h"
+#include "textdisplay.h"
 #include <sstream>
-#include <iomanip>
 using namespace std;
 
-GraphicsDisplay::GraphicsDisplay(){
-	w= new Xwindow(640,640);
+TextDisplay::TextDisplay(){
+	cout << "CS246 Chess!" << endl;
+	this->showCommands();
 	blankBoard();
+
 }
 
-GraphicsDisplay::~GraphicsDisplay(){
-	delete w;
+void TextDisplay::showCommands() const {
+	
+	cout << "---- Commands ----                                             ---- Description ----" << endl;
+	cout << "During/For a Game:" << endl;
+	cout << "	game *whitePlayer* *blackPlayer* 			---- To begin a game" << endl;
+	cout << "	move *move_from* [*move_to] [*Piece_for_promotion*]	---- To play a move" << endl;
+	cout << "	resign							---- To resign" << endl;
+	cout << "During/For Setup Mode:" << endl;
+	cout << "	setup							---- Enters setup mode" << endl;
+	cout << "	+ *Piece* *Square* 					---- Places Piece on Square" << endl;
+	cout << "	- *Square*						---- Removes the piece on Square" << endl;
+	cout << "	= *Colour*						---- Makes it Colour's turn next" << endl;
+	cout << "	done							---- Leaves setup mode" << endl;
+
 }
 
-void GraphicsDisplay::blankBoard(){
-	for (int i = 1; i <= 8; ++i){
-		for (int j = 1; j <= 8; ++j){
-			if((i % 2 == 0 && j % 2 ==  0) || (i % 2 == 1 && j % 2 == 1)){
-				w->fillRectangle(i * 64, j * 64, 64, 64, c2);
-			}
-			else{
-				w->fillRectangle(i * 64, j * 64, 64, 64, c1);
-			}
+void TextDisplay::blankBoard(){
+	for (int i = 0; i < 8; ++i) {
+		vector<char> row;
+		for (int j = 0; j < 8; ++j) {
+			char square = ((i + j) % 2 == 0 ? '_' : ' ');
+			row.emplace_back(square);
 		}
-		string s = to_string(reverse(i - 1));
-		w->drawString(16, i * 64 + 32 + 16, s);
-		s = 'a' + i - 1;
-		w->drawString(i * 64 + 16, 9 * 64 + 32 + 16, s);
+		display.emplace_back(row);
 	}
-	stringstream ss1;
-	stringstream ss2;
-	ss1 << blackScore;
-	ss2 << whiteScore;
-	string score = "Black: " + ss1.str() + "  White: " + ss2.str();
-	w->drawString(10, 40, score);
-	updateTurn(true);
+
+	cout << *this << endl;
 }
 
-void GraphicsDisplay::defaultDisplay(){
+void TextDisplay::defaultDisplay(){
 	for(int i = 1; i <= 8; ++i){
 		if(i == 1 || i == 8){
 			w->drawString(i * 64 + 16, 64 + 32, "r");
@@ -63,7 +65,7 @@ void GraphicsDisplay::defaultDisplay(){
 	}
 }
 
-void GraphicsDisplay::set(char piece, const string &original){
+void TextDisplay::set(char piece, const string &original){
 	int col = original[0] - 'a' +1;
 	int row = reverse(original[1] - '1');     
 	int rectFillColour = (((col + row) % 2 == 0) ? c2 : c1);
@@ -72,11 +74,11 @@ void GraphicsDisplay::set(char piece, const string &original){
 	w->drawString(col * 64 + 16, row * 64 + 32, s);
 }
 
-int GraphicsDisplay::reverse(int row){
+int TextDisplay::reverse(int row){
 	return (8 - row);
 }
 
-void GraphicsDisplay::update(char piece,const string &original, const string &newpos){
+void TextDisplay::update(char piece,const string &original, const string &newpos){
 	int ogrow = reverse(original[1] - '1');
 	int ogcol = original[0] - 'a' + 1;
 	int newrow = reverse(newpos[1] - '1');
@@ -89,7 +91,7 @@ void GraphicsDisplay::update(char piece,const string &original, const string &ne
 	w->drawString(newcol * 64 + 16, (newrow)*64 + 32 , s);
 }
 
-void GraphicsDisplay::updateScore(bool whitewin, bool stalemate){
+void TextDisplay::Score(bool whitewin, bool stalemate){
 	if(stalemate){
 		whiteScore += 1;
 		blackScore += 1;
@@ -99,18 +101,26 @@ void GraphicsDisplay::updateScore(bool whitewin, bool stalemate){
 	else{
 		blackScore += 1;
 	}
-	w->fillRectangle(0, 0, 300, 50, Xwindow::White);
 	stringstream ss1;
 	stringstream ss2;
 	ss1 << blackScore;
 	ss2 << whiteScore;
 	string score = "Black: " + ss1.str() + "  White: " + ss2.str();
-	w->drawString(10, 40, score);
+	cout << score << endl;
 }
 
-void GraphicsDisplay::updateTurn(bool white){
+void TextDisplay::Turn(bool white){
 	string s = (white)? "White's Move" : "Black's Move";
-	w->fillRectangle(365 , 0, 265 , 50, Xwindow::White);
-	w->drawString(380, 40, s);
+	cout << s << endl;
+}
+
+ostream& operator<<(ostream& out, TextDisplay& td) {		
+	for (int i = 0; i < td.display.size(); ++i) {
+		for (int j = 0; j < td.display[i].size(); ++j) {
+			cout << td.display[i][j];
+		}
+		cout << endl;
+	}
+	return out;
 }
 

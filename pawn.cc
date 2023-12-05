@@ -23,6 +23,8 @@ void Pawn::moved() {
 
 // determines whether a Pawn can move to the desired end coordinates
 bool Pawn::canMove(const std::string &start,const std::string &end, Piece ** b) const {
+	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
+	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
 	int begin = getPos(start);
 	int fin = getPos(end);
 
