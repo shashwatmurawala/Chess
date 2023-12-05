@@ -8,7 +8,7 @@ class Rook: public Piece {
 	bool firstMove;
 public:
 	Rook(int pos, bool isWhite);
-	char Type() const override;
+	char PT() const override;
 	bool isEmpty() const override;
 	void moved() override;
 	bool first() const override;

@@ -25,7 +25,7 @@ bool Empty::isEmpty() const {
 	return true;
 }
 
-char Empty::Type() const {
+char Empty::PT() const {
 	return isWhiteSquare(squarelocation()) ? ' ' : '_' ;
 }
 

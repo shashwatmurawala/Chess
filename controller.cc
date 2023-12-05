@@ -86,7 +86,7 @@ void Controller::game() {
 
 	if (board->isP1computer() && board->isP2computer()){
 		while(!board->isGameOver()){
-			board->makeCompMove();
+			board->ComputerMove();
 			cout << *board << endl;
 		}
 
@@ -94,7 +94,7 @@ void Controller::game() {
 		
 		while(true) {
 			if (board->getTurnStatus()) {
-				board->makeCompMove();
+				board->ComputerMove();
 			} else {
 				cin >> action;
 
@@ -135,7 +135,7 @@ void Controller::game() {
 		while(true){
 
 			if (!board->getTurnStatus()) {
-				board->makeCompMove();
+				board->ComputerMove();
 				cout << *board << endl;
 			} else {
 				cin >> action;

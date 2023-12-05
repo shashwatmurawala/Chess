@@ -4,7 +4,7 @@
 
 using namespace std;
 
-King::King(int index, bool white): Piece{index, white}, firstMove{true} {}
+King::King(int arrayloc, bool white): Piece{arrayloc, white}, firstMove{true} {}
 
 King::~King(){}
 
@@ -15,18 +15,18 @@ void King::moved(){
 bool King::validMove(const string &start, const string &end, Piece ** b) const {
 	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
 	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
-	int org = getPos(start);
-	int newloc = getPos(end);
+	int org = arrayloc(start);
+	int newloc = arrayloc(end);
 
 	if (!b[newloc]->isEmpty() && (isWhite() == b[newloc]->isWhite())) {
 		return false;
 	}else if (first() && 2 == abs(org - newloc)) {
 		if (isWhite()){
 			if ((b[61]->isEmpty() && b[62]->isEmpty() &&
-				b[63]->Type() == 'R' && newloc == 62 &&
+				b[63]->PT() == 'R' && newloc == 62 &&
 				org == 60) || 
 				(b[59]->isEmpty() && b[58]->isEmpty() &&
-				b[57]->isEmpty() && b[56]->Type() == 'R' 
+				b[57]->isEmpty() && b[56]->PT() == 'R' 
 				&& newloc == 58 && org == 60)) {
 					return true;
 			}
@@ -35,10 +35,10 @@ bool King::validMove(const string &start, const string &end, Piece ** b) const {
 			}
 		} else{
 			if ((b[5]->isEmpty() && b[6]->isEmpty() &&
-				b[7]->Type() == 'R' && org == 4 &&
+				b[7]->PT() == 'R' && org == 4 &&
 				newloc == 6) ||
 				(b[1]->isEmpty() && b[2]->isEmpty() &&
-				b[3]->isEmpty() && b[0]->Type() == 'R' 
+				b[3]->isEmpty() && b[0]->PT() == 'R' 
 				&& newloc == 2 && org == 4)) {
 					return true;
 			}
@@ -92,6 +92,6 @@ bool King::isEmpty() const {
 	return false;
 }
 
-char King::Type() const {
+char King::PT() const {
 	return isWhite() ? 'K' : 'k';
 }

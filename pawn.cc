@@ -20,8 +20,8 @@ void Pawn::moved() {
 bool Pawn::validMove(const std::string &start,const std::string &end, Piece ** b) const {
 	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
 	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
-	int org = getPos(start);
-	int newloc = getPos(end);
+	int org = arrayloc(start);
+	int newloc = arrayloc(end);
 
 	if (squarelocation() != org) return false;
 
@@ -68,7 +68,7 @@ bool Pawn::validMove(const std::string &start,const std::string &end, Piece ** b
 	return false;
 }
 
-char Pawn::Type() const {
+char Pawn::PT() const {
 	return isWhite() ? 'P' : 'p';
 }
 

@@ -10,7 +10,7 @@ public:
 	Pawn(int pos, bool isWhite);
 	bool validMove(const std::string &start,const std::string &end, Piece ** b) const override;
 	bool isEmpty() const override;
-	char Type() const override;
+	char PT() const override;
 	void moved() override;
 	bool first() const override;
 };

@@ -17,8 +17,8 @@ bool Bishop::isEmpty() const{
 }
 
 bool Bishop::validMove(const std::string &start,const std::string &end, Piece ** b) const {
-	int org = getPos(start);
-	int newloc = getPos(end);
+	int org = arrayloc(start);
+	int newloc = arrayloc(end);
 
 	if (!(org==0) && !(org == 63) && (org % 7 == newloc % 7) && org < newloc) {
 		while (true) {
@@ -96,7 +96,7 @@ bool Bishop::validMove(const std::string &start,const std::string &end, Piece **
 	}
 }
 
-char Bishop::Type() const {
+char Bishop::PT() const {
 	return isWhite() ? 'B' : 'b';
 }
 

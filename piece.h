@@ -4,8 +4,8 @@
 
 class Board;
 
-int getPos(const std::string &cmd); 
-std::string getCor(int index); 
+int arrayloc(const std::string &cmd); 
+std::string BoardCoord(int arrayloc); 
 class Piece {
 	int pos;
 	bool white;
@@ -23,7 +23,7 @@ class Piece {
 		bool Row1() const;
 		virtual void moved();
 		virtual bool first() const;
-		virtual char Type() const=0;
+		virtual char PT() const=0;
 		virtual ~Piece()=0;
 };
 

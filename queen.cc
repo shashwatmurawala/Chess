@@ -18,8 +18,8 @@ Queen::Queen(int pos, bool isWhite): Piece(pos,isWhite){}
 bool Queen::validMove(const std::string &start, const std::string &end, Piece ** b) const{
 	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
 	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
-	int org = getPos(start);
-	int newloc = getPos(end);
+	int org = arrayloc(start);
+	int newloc = arrayloc(end);
 	bool col = isWhite();
 	Rook rmoves{org, col};
 	Bishop dmoves{org, col};
@@ -65,7 +65,7 @@ bool Queen::validMove(const std::string &start, const std::string &end, Piece **
 	}
 }
 
-char Queen::Type() const {
+char Queen::PT() const {
 	return isWhite() ? 'Q' : 'q';
 }
 

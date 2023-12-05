@@ -45,7 +45,7 @@ class Board {
 		void setgd(GraphicsDisplay *g);
 		bool isP1computer();
 		bool isP2computer();
-		void makeCompMove();
+		void ComputerMove();
 
 		std::string findKing(bool isWhite) const;
 

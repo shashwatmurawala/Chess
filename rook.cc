@@ -7,8 +7,8 @@ Rook::Rook(int pos, bool isWhite) : Piece{pos, isWhite}, firstMove{true} {}
 bool Rook::validMove(const std::string &start, const std::string &end, Piece ** b) const {
 	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
 	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
-	int org = getPos(start);
-	int newloc = getPos(end);
+	int org = arrayloc(start);
+	int newloc = arrayloc(end);
 
 	if ((org % 8 == newloc % 8) && org > newloc) {
 		org -= 8;
@@ -73,7 +73,7 @@ bool Rook::validMove(const std::string &start, const std::string &end, Piece ** 
 	}
 }
 
-char Rook::Type() const {
+char Rook::PT() const {
 	return isWhite() ? 'R' : 'r';
 }
 

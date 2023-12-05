@@ -2,14 +2,14 @@
 #include "piece.h"
 #include <sstream>
 
-int getPos(const std::string &cmd) {
+int arrayloc(const std::string &cmd) {
 	int col = cmd[0] - 'a';
 	int row = cmd[1] - '1';
 	int pos = 8 * (7 - row) + col; 
 	return pos;
 }
 
-std::string getCor(int index) {
+std::string BoardCoord(int index) {
 	std::string s;
 	std::ostringstream oss;
 	char row = '0' + (8 - (index / 8)); 
