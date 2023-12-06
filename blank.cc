@@ -28,4 +28,3 @@ bool Blank::isBlank() const {
 char Blank::PT() const {
 	return isWhiteSquare(squarelocation()) ? ' ' : '_' ;
 }
-

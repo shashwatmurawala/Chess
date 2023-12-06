@@ -99,4 +99,3 @@ bool Bishop::validMove(const std::string &start,const std::string &end, Piece **
 char Bishop::PT() const {
 	return isWhite() ? 'B' : 'b';
 }
-

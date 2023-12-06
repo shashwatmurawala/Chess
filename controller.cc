@@ -248,4 +248,3 @@ void Controller::players() {
 		board->newPlayers(ip1,ip2);	
 	}
 }
-

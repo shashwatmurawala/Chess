@@ -534,4 +534,3 @@ void Board::ComputerMove(){
 	}
 	move(start,last);
 }
-

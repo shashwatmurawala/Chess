@@ -71,4 +71,3 @@ bool Pawn::validMove(const std::string &start,const std::string &end, Piece ** b
 char Pawn::PT() const {
 	return isWhite() ? 'P' : 'p';
 }
-

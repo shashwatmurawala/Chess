@@ -129,4 +129,3 @@ void GraphicsDisplay::updateTurn(bool white){
 	w->fillRectangle(365 , 0, 265 , 50, Xwindow::White);
 	w->drawString(380, 40, s);
 }
-
