@@ -13,13 +13,13 @@ bool Rook::validMove(const std::string &start, const std::string &end, Piece ** 
 	if ((org % 8 == newloc % 8) && org > newloc) {
 		org -= 8;
 		while (org != newloc) {
-			if (!b[org]->isEmpty()) {
+			if (!b[org]->isBlank()) {
 				return false;
 			}
 			org -=8;
 		}
-		if ((b[org]->isEmpty()) || 
-			(!(!b[org]->isEmpty() && b[org]->isWhite() == isWhite()))){
+		if ((b[org]->isBlank()) || 
+			(!(!b[org]->isBlank() && b[org]->isWhite() == isWhite()))){
 			return true;
 		}else {
 			return false;
@@ -27,13 +27,13 @@ bool Rook::validMove(const std::string &start, const std::string &end, Piece ** 
 	}else if ((org % 8 == newloc % 8) && org < newloc) {
 		org += 8;
 		while (org != newloc) {
-			if (!b[org]->isEmpty()) {
+			if (!b[org]->isBlank()) {
 				return false;
 			}
 			org +=8;
 		}
-		if ((b[org]->isEmpty()) ||
-			(!(!b[org]->isEmpty() && b[org]->isWhite() == isWhite()))) {
+		if ((b[org]->isBlank()) ||
+			(!(!b[org]->isBlank() && b[org]->isWhite() == isWhite()))) {
 			return true;
 		}else{
 			return false;
@@ -41,13 +41,13 @@ bool Rook::validMove(const std::string &start, const std::string &end, Piece ** 
 	}else if ((org / 8) == (newloc / 8) && (org > newloc)) {
 		org--;
 		while (org != newloc) {
-			if (!b[org]->isEmpty()) {
+			if (!b[org]->isBlank()) {
 				return false;
 			}
 			org--;
 		}
-		if ((b[org]->isEmpty()) ||
-			(!(!b[org]->isEmpty() && b[org]->isWhite() == isWhite()))) {
+		if ((b[org]->isBlank()) ||
+			(!(!b[org]->isBlank() && b[org]->isWhite() == isWhite()))) {
 			return true;
 		}
 		else{
@@ -56,13 +56,13 @@ bool Rook::validMove(const std::string &start, const std::string &end, Piece ** 
 	}else if ((org / 8) == (newloc / 8) && (org < newloc)) {
 		org++;
 		while (org != newloc) {
-			if (!b[org]->isEmpty()) {
+			if (!b[org]->isBlank()) {
 				return false;
 			}
 			org++;
 		}
-		if ((b[org]->isEmpty()) ||
-			(!(!b[org]->isEmpty() && b[org]->isWhite() == isWhite()))) {
+		if ((b[org]->isBlank()) ||
+			(!(!b[org]->isBlank() && b[org]->isWhite() == isWhite()))) {
 			return true;
 		}else{
 			return false;
@@ -77,7 +77,7 @@ char Rook::PT() const {
 	return isWhite() ? 'R' : 'r';
 }
 
-bool Rook::isEmpty() const {
+bool Rook::isBlank() const {
 	return false;
 }
 

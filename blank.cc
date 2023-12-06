@@ -1,4 +1,4 @@
-#include "empty.h"
+#include "blank.h"
 #include "piece.h"
 #include <string>
 
@@ -13,19 +13,19 @@ static int isWhiteSquare(int pos){
 	return false;
 }
 
-Empty::Empty(int index): Piece{index, true}{}
+Blank::Blank(int index): Piece{index, true}{}
 
-Empty::~Empty(){};
+Blank::~Blank(){};
 
-bool Empty::validMove(const std::string &start, const std::string &end, Piece ** b) const {
+bool Blank::validMove(const std::string &start, const std::string &end, Piece ** b) const {
 	return false;
 }
 
-bool Empty::isEmpty() const {
+bool Blank::isBlank() const {
 	return true;
 }
 
-char Empty::PT() const {
+char Blank::PT() const {
 	return isWhiteSquare(squarelocation()) ? ' ' : '_' ;
 }
 

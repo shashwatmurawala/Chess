@@ -5,7 +5,7 @@
 #include "player.h"
 #include "scoreboard.h"
 #include "piece.h"
-#include "empty.h"
+#include "blank.h"
 #include "pawn.h"
 #include "knight.h"
 #include "bishop.h"
@@ -19,7 +19,7 @@ using namespace std;
 Board::Board(int player1, int player2): board{new Piece*[64]}, Turn{true},
 		inCheck{false}, gameOver{true}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
 			for (int i = 0; i < 64; ++i) {
-				board[i] = new Empty(i);
+				board[i] = new Blank(i);
 			}
 			if (player1 > 0) {
 				delete p1;
@@ -34,7 +34,7 @@ Board::Board(int player1, int player2): board{new Piece*[64]}, Turn{true},
 void Board::clearBoard(){
 	for (int i = 0; i < 64; ++i) {
 		delete board[i];
-		board[i] = new Empty(i);
+		board[i] = new Blank(i);
 	}
 }
 
@@ -57,7 +57,7 @@ void Board::normalSetup(){
 		board[i] = new Pawn(i,false);
 	}
 	for (int j = 16; j < 48; ++j) {
-		board[j] = new Empty(j);
+		board[j] = new Blank(j);
 	}
 	for (int k = 48; k < 56; ++k) {
 		board[k] = new Pawn(k,true);
@@ -114,7 +114,7 @@ void Board::place(char piece, const string &task) {
 	}
 	else if (piece == 'E') {
 		delete board[index];
-		board[index] = new Empty(index);
+		board[index] = new Blank(index);
 	}
 	gd->set(p,task);
 }
@@ -139,7 +139,7 @@ bool Board::testMove(const string &start, const string &end) {
 
 	if (p->validMove(start, end, getBoard())) {
 		board[arrayloc(end)] = p;
-		board[arrayloc(start)] = new Empty(arrayloc(start));
+		board[arrayloc(start)] = new Blank(arrayloc(start));
 		if (Check(Turn)) {
 			delete board[arrayloc(start)];
 			board[arrayloc(start)] = p;
@@ -180,14 +180,14 @@ void Board::move(const string &start, const string &end){
 		delete board[arrayloc(end)];
 		board[arrayloc(end)] = p;
 		p->changePos(arrayloc(end));
-		board[arrayloc(start)] = new Empty(arrayloc(start));
+		board[arrayloc(start)] = new Blank(arrayloc(start));
 		if (board[arrayloc(end)]->PT() == 'K' && !inCheck) {
 			if (start == "e1" && end == "g1") {
 				Piece *castle = getPiece("h1");
 				delete board[61];
 				board[arrayloc("f1")] = castle;
 				castle->changePos(61);
-				board[63] = new Empty(63);
+				board[63] = new Blank(63);
 				castle->moved();
 				gd->update('R',"h1","f1");
 			}
@@ -196,7 +196,7 @@ void Board::move(const string &start, const string &end){
 				delete board[59];
 				board[arrayloc("d1")] = castle;
 				castle->changePos(59);
-				board[56] = new Empty(56);
+				board[56] = new Blank(56);
 				castle->moved();
 				gd->update('R',"a1","f1");
 			}
@@ -207,7 +207,7 @@ void Board::move(const string &start, const string &end){
 				delete board[5];
 				board[arrayloc("f8")] = castle;
 				castle->changePos(5);
-				board[7] = new Empty(7);
+				board[7] = new Blank(7);
 				castle->moved();
 				gd->update('r',"h8","f8");
 			}
@@ -216,7 +216,7 @@ void Board::move(const string &start, const string &end){
 				delete board[3];
 				board[arrayloc("d8")] = castle;
 				castle->changePos(3);
-				board[0] = new Empty(0);
+				board[0] = new Blank(0);
 				castle->moved();
 				gd->update('r',"a8","d8");
 			}

@@ -14,7 +14,7 @@ class Piece {
 		Piece(int pos, bool white);
 		virtual bool validMove(const std::string &start, const std::string &end, Piece ** b) const=0;  
 		bool isWhite() const;
-		virtual bool isEmpty() const=0;
+		virtual bool isBlank() const=0;
 		int squarelocation() const;
 		void changePos(int posn);
 		bool ColH() const;

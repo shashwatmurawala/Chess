@@ -9,7 +9,7 @@ class Rook: public Piece {
 public:
 	Rook(int pos, bool isWhite);
 	char PT() const override;
-	bool isEmpty() const override;
+	bool isBlank() const override;
 	void moved() override;
 	bool first() const override;
 	bool validMove(const std::string &start, const std::string &end, Piece ** b) const override;

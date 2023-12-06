@@ -5,7 +5,7 @@
 
 Pawn::Pawn(int pos, bool isWhite): Piece{pos , isWhite}, firstMove{true} {}
 
-bool Pawn::isEmpty() const {
+bool Pawn::isBlank() const {
 	return false;
 }
 
@@ -27,41 +27,41 @@ bool Pawn::validMove(const std::string &start,const std::string &end, Piece ** b
 
 	if (isWhite()) {
 		if (ColA()) {
-			if (((squarelocation() - 8) == newloc && b[newloc]->isEmpty()) ||
-				((squarelocation() - 16) == newloc && b[newloc+8]->isEmpty() && b[newloc]->isEmpty() && firstMove) ||
-				((squarelocation() - 7) == newloc && !(b[newloc]->isEmpty()))){
+			if (((squarelocation() - 8) == newloc && b[newloc]->isBlank()) ||
+				((squarelocation() - 16) == newloc && b[newloc+8]->isBlank() && b[newloc]->isBlank() && firstMove) ||
+				((squarelocation() - 7) == newloc && !(b[newloc]->isBlank()))){
 				return true;
 			}
 		}else if (ColH()) {
-			if (((squarelocation() - 8) == newloc && b[newloc]->isEmpty()) ||
-				((squarelocation() - 16) == newloc && b[newloc+8]->isEmpty() && b[newloc]->isEmpty() && firstMove)||
-				((squarelocation() - 9) == newloc && !(b[newloc]->isEmpty()))) {
+			if (((squarelocation() - 8) == newloc && b[newloc]->isBlank()) ||
+				((squarelocation() - 16) == newloc && b[newloc+8]->isBlank() && b[newloc]->isBlank() && firstMove)||
+				((squarelocation() - 9) == newloc && !(b[newloc]->isBlank()))) {
 				return true;
 				}
-		}else if (((squarelocation() - 8) == newloc && b[newloc]->isEmpty()) ||
-				((squarelocation() - 16) == newloc && b[newloc+8]->isEmpty() && b[newloc]->isEmpty() && firstMove) ||
-				((squarelocation() - 9) == newloc && !(b[newloc]->isEmpty())) ||
-				((squarelocation() - 7) == newloc && !(b[newloc]->isEmpty()))) {
+		}else if (((squarelocation() - 8) == newloc && b[newloc]->isBlank()) ||
+				((squarelocation() - 16) == newloc && b[newloc+8]->isBlank() && b[newloc]->isBlank() && firstMove) ||
+				((squarelocation() - 9) == newloc && !(b[newloc]->isBlank())) ||
+				((squarelocation() - 7) == newloc && !(b[newloc]->isBlank()))) {
 				return true;
 		}
 	}
 	else {
 		if (ColA()) {
-			if (((squarelocation() + 8) == newloc && b[newloc]->isEmpty())||
-				((squarelocation() + 16) == newloc && b[newloc-8]->isEmpty() && b[newloc]->isEmpty() && firstMove) ||
-				((squarelocation() + 9) == newloc && !(b[newloc]->isEmpty()))) {
+			if (((squarelocation() + 8) == newloc && b[newloc]->isBlank())||
+				((squarelocation() + 16) == newloc && b[newloc-8]->isBlank() && b[newloc]->isBlank() && firstMove) ||
+				((squarelocation() + 9) == newloc && !(b[newloc]->isBlank()))) {
 				return true;
 			}
 		}else if (ColH()) {
-			if (((squarelocation() + 8) == newloc && b[newloc]->isEmpty()) ||
-				((squarelocation() + 16) == newloc && b[newloc-8]->isEmpty() && b[newloc]->isEmpty() && firstMove) ||
-				((squarelocation() + 7) == newloc && !(b[newloc]->isEmpty()))) {
+			if (((squarelocation() + 8) == newloc && b[newloc]->isBlank()) ||
+				((squarelocation() + 16) == newloc && b[newloc-8]->isBlank() && b[newloc]->isBlank() && firstMove) ||
+				((squarelocation() + 7) == newloc && !(b[newloc]->isBlank()))) {
 				return true;
 			}
-		}else if (((squarelocation() + 8) == newloc && b[newloc]->isEmpty()) ||
-				((squarelocation() + 16) == newloc && b[newloc - 8]->isEmpty() && b[newloc]->isEmpty() && firstMove) ||
-				((squarelocation() + 9) == newloc && !(b[newloc]->isEmpty())) ||
-				((squarelocation() + 7) == newloc && !(b[newloc]->isEmpty()))) {
+		}else if (((squarelocation() + 8) == newloc && b[newloc]->isBlank()) ||
+				((squarelocation() + 16) == newloc && b[newloc - 8]->isBlank() && b[newloc]->isBlank() && firstMove) ||
+				((squarelocation() + 9) == newloc && !(b[newloc]->isBlank())) ||
+				((squarelocation() + 7) == newloc && !(b[newloc]->isBlank()))) {
 				return true;
 		}
 	}

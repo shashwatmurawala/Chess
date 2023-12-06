@@ -33,13 +33,13 @@ bool Queen::validMove(const std::string &start, const std::string &end, Piece **
 			if(org > 63){
 				return false;
 			}
-			if (org == newloc && (b[org]->isEmpty() || (isWhite() != b[org]->isWhite()))) {
+			if (org == newloc && (b[org]->isBlank() || (isWhite() != b[org]->isWhite()))) {
 				return true;
 			}
-			else if (org == newloc && b[org]->isEmpty()) {
+			else if (org == newloc && b[org]->isBlank()) {
 				return true;
 			}
-			else if (!b[org]->isEmpty()) {
+			else if (!b[org]->isBlank()) {
 				return false;
 			}
 		}
@@ -49,13 +49,13 @@ bool Queen::validMove(const std::string &start, const std::string &end, Piece **
 			if(org < 0){
 				return false;
 			}
-			if (org == newloc && (b[org]->isEmpty() || (isWhite() != b[org]->isWhite()))) {
+			if (org == newloc && (b[org]->isBlank() || (isWhite() != b[org]->isWhite()))) {
 				return true;
 			}
-			else if (org == newloc && b[org]->isEmpty()) {
+			else if (org == newloc && b[org]->isBlank()) {
 				return true;
 			}
-			else if (!b[org]->isEmpty()) {
+			else if (!b[org]->isBlank()) {
 				return false;
 			}
 		}
@@ -69,6 +69,6 @@ char Queen::PT() const {
 	return isWhite() ? 'Q' : 'q';
 }
 
-bool Queen::isEmpty() const {
+bool Queen::isBlank() const {
 	return false;
 }

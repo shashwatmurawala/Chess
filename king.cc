@@ -18,15 +18,15 @@ bool King::validMove(const string &start, const string &end, Piece ** b) const {
 	int org = arrayloc(start);
 	int newloc = arrayloc(end);
 
-	if (!b[newloc]->isEmpty() && (isWhite() == b[newloc]->isWhite())) {
+	if (!b[newloc]->isBlank() && (isWhite() == b[newloc]->isWhite())) {
 		return false;
 	}else if (first() && 2 == abs(org - newloc)) {
 		if (isWhite()){
-			if ((b[61]->isEmpty() && b[62]->isEmpty() &&
+			if ((b[61]->isBlank() && b[62]->isBlank() &&
 				b[63]->PT() == 'R' && newloc == 62 &&
 				org == 60) || 
-				(b[59]->isEmpty() && b[58]->isEmpty() &&
-				b[57]->isEmpty() && b[56]->PT() == 'R' 
+				(b[59]->isBlank() && b[58]->isBlank() &&
+				b[57]->isBlank() && b[56]->PT() == 'R' 
 				&& newloc == 58 && org == 60)) {
 					return true;
 			}
@@ -34,11 +34,11 @@ bool King::validMove(const string &start, const string &end, Piece ** b) const {
 				return false;
 			}
 		} else{
-			if ((b[5]->isEmpty() && b[6]->isEmpty() &&
+			if ((b[5]->isBlank() && b[6]->isBlank() &&
 				b[7]->PT() == 'R' && org == 4 &&
 				newloc == 6) ||
-				(b[1]->isEmpty() && b[2]->isEmpty() &&
-				b[3]->isEmpty() && b[0]->PT() == 'R' 
+				(b[1]->isBlank() && b[2]->isBlank() &&
+				b[3]->isBlank() && b[0]->PT() == 'R' 
 				&& newloc == 2 && org == 4)) {
 					return true;
 			}
@@ -88,7 +88,7 @@ bool King::first() const {
 	return firstMove;
 }
 
-bool King::isEmpty() const {
+bool King::isBlank() const {
 	return false;
 }
 

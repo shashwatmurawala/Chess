@@ -4,14 +4,14 @@
 
 Knight::Knight(int pos, bool isWhite): Piece(pos, isWhite) {}
 
-bool Knight::isEmpty() const{
+bool Knight::isBlank() const{
 	return false;
 }
 
 bool Knight::validMove(const std::string &start,const std::string &end, Piece ** b) const {
 	if((start[0] < 'a')||(start[0] > 'h')||(start[1] < '1')||(start[1] > '8')) return false;
 	if((end[0] < 'a')||(end[0] > 'h')||(end[1] < '1')||(end[1] > '8')) return false;
-	if(!b[arrayloc(end)]->isEmpty() && isWhite() == b[arrayloc(end)]->isWhite()){
+	if(!b[arrayloc(end)]->isBlank() && isWhite() == b[arrayloc(end)]->isWhite()){
 		return false;
 	}
 	int org_x = arrayloc(start) % 8;

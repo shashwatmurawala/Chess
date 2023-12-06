@@ -1,15 +1,15 @@
-#ifndef ___EMPTY___
-#define ___EMPTY___
+#ifndef ___BLANK___
+#define ___BLANK___
 
 #include <string>
 #include "piece.h"
 
-class Empty: public Piece {
+class Blank: public Piece {
 public:
-	Empty(int index);
-	~Empty();
+	Blank(int index);
+	~Blank();
 	bool validMove(const std::string &start, const std::string &end, Piece ** b) const override;
-	bool isEmpty() const override;
+	bool isBlank() const override;
 	char PT() const override;
 };
 
